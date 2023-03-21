@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nomor_serial: MyString
+  nama: MyString
+  kategori: MyString
+  sifat: MyString
+  vendor: one
+
+two:
+  nomor_serial: MyString
+  nama: MyString
+  kategori: MyString
+  sifat: MyString
+  vendor: two

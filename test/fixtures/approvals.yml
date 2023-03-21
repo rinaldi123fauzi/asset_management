@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  loan: one
+  approve_by: MyString
+  approve_level: 1
+  date: 2023-03-21 16:58:05
+
+two:
+  loan: two
+  approve_by: MyString
+  approve_level: 1
+  date: 2023-03-21 16:58:05

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nomor serial:</strong>
+  <%= @tool.nomor_serial %>
+</p>
+
+<p>
+  <strong>Nama:</strong>
+  <%= @tool.nama %>
+</p>
+
+<p>
+  <strong>Kategori:</strong>
+  <%= @tool.kategori %>
+</p>
+
+<p>
+  <strong>Sifat:</strong>
+  <%= @tool.sifat %>
+</p>
+
+<p>
+  <strong>Vendor:</strong>
+  <%= @tool.vendor %>
+</p>
+
+<%= link_to 'Edit', edit_tool_path(@tool) %> |
+<%= link_to 'Back', tools_path %>

@@ -1,0 +1,53 @@
+<div class="card">
+  <%= form_for @sub_work_category, html: { id: 'clusterForm', class: "needs-validation", novalidate: "" } do |f| %>
+    <div class="card-header">
+      <h4>Tambah Sub Kategori</h4>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label>Kategori</label>
+        <div class="form-group">
+          <select class="form-control select2" required="" name="sub_work_category[work_category_id]">
+            <% WorkCategory.all.each do |data| %>
+              <% if @sub_work_category.work_category_id %>
+                <% if @sub_work_category.work_category_id == data.id %>
+                  <option value="<%= data.id %>" selected><%= data.nama_kategori %></option>
+                <% else %>
+                  <option value="<%= data.id %>"><%= data.nama_kategori %></option>
+                <% end %>
+              <% else %>
+                <option value="<%= data.id %>"><%= data.nama_kategori %></option>
+              <% end %>
+            <% end %>
+          </select>
+        </div>
+        <div class="invalid-feedback">
+          What's your category?
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Nama Sub Kategori</label>
+        <input type="text" class="form-control" required="" name="sub_work_category[nama_subkategori]" value="<%= @sub_work_category.nama_subkategori %>">
+        <div class="invalid-feedback">
+          What's your category?
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-right">
+      <button class="btn btn-primary">Submit</button>
+    </div>
+  <% end %>
+</div>
+
+<script>
+$(".needs-validation").submit(function () {
+    var form = $(this);
+    if (form[0].checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    form.addClass("was-validated");
+  });
+
+  $('.select2').select2();
+</script>

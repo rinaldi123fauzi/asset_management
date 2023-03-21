@@ -1,0 +1,360 @@
+<section class="section">
+    <form id="searchData">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Area</label>
+                    <select class="form-control select2" id="area">
+                        <option selected disabled>--Pilih Area--</option>
+                        <% Area.all.each do |f| %>
+                            <option value="<%= f.id %>"><%= f.nama_area %></option>
+                        <% end %>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Tahun</label>
+                    <select class="form-control select2" id="tahun">
+                        <option selected disabled>--Pilih Tahun--</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Nilai Material</label>
+                    <select class="form-control select2" id="material">
+                        <option selected disabled>--Pilih Material--</option>
+                        <option value="nilai total kontrak">nilai total kontrak</option>
+                        <option value="nilai total vendor">nilai total vendor</option>
+                        <option value="nilai total terpasang belum ditagih">nilai total terpasang belum ditagih</option>
+                        <option value="nilai total tertagih">nilai total yang tertagih</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label style="color: transparent;">Nilai Material</label><br>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
+            </div>
+        </div>
+    </form>
+    <div class="row ">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-6">
+            <div class="card">
+            <div class="card-header">
+                <h4>Jilid-2</h4>
+            </div>
+            <div class="card-body">
+                <div class="recent-report__chart">
+                <div id="chart1"></div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-6">
+            <div class="card">
+            <div class="card-header">
+                <h4>SPK-2</h4>
+            </div>
+            <div class="card-body">
+                <div class="recent-report__chart">
+                <div id="chart2"></div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-6">
+            <div class="card">
+            <div class="card-header">
+                <h4>Sub Total</h4>
+            </div>
+            <div class="card-body">
+                <div class="recent-report__chart">
+                <div id="chart3"></div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <%= javascript_include_tag 'charts' %>
+    <script>
+    'use strict';
+$(document).ready(function () {
+    $.ajax({
+        url: "<%= searchDataDashboard_helper_json_index_path %>",
+        method: 'POST',
+        data : {
+                authenticity_token: '<%= form_authenticity_token %>',
+                },
+        success: function(data)
+        {
+            console.log(data);
+            // let arrayTotal = [];
+            // for (let i = 0; i < data[0]['data_dashboard'].length; i++) {
+            //     const element = data[0]['data_dashboard'][i];
+            //     arrayTotal.push(element['total_harga']);
+            // }
+            $('#chart1').empty();
+            $('#chart2').empty();
+            $('#chart3').empty();
+            chart1(data[0]['data_dashboard']);
+            chart2(data[0]['data_dashboard']);
+            chart3(data[0]['data_dashboard']);
+        }
+    });
+
+});
+
+$('#searchData').submit(function(e) {
+    e.preventDefault();
+    const area = $('#area option:selected').val();
+    const tahun = $('#tahun option:selected').val();
+    const material = $('#material option:selected').val();
+    $.ajax({
+        url: "<%= searchDataDashboard_helper_json_index_path %>",
+        method: 'POST',
+        data : {
+                authenticity_token: '<%= form_authenticity_token %>',
+                area:area,
+                tahun:tahun,
+                material:material
+                },
+        success: function(data)
+        {
+            console.log(data);
+            // let arrayTotal = [];
+            // for (let i = 0; i < data[0]['data_dashboard'].length; i++) {
+            //     const element = data[0]['data_dashboard'][i];
+            //     arrayTotal.push(element['total_harga']);
+            // }
+            $('#chart1').empty();
+            $('#chart2').empty();
+            $('#chart3').empty();
+            chart1(data[0]['data_dashboard']);
+            chart2(data[0]['data_dashboard']);
+            chart3(data[0]['data_dashboard']);
+        }
+    });
+});
+
+function chart1(data) {
+    $('#chart1').show();
+    let arrayTotal = [];
+    for (let i = 0; i < data.length; i++) {
+        const element = data[i];
+        arrayTotal.push(element['total_harga']);
+    }
+    console.log(arrayTotal);
+    var options = {
+        chart: {
+            height: 350,
+            type: 'bar',
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: '30%',
+            },
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            show: true,
+            width: 2,
+            colors: ['transparent']
+        },
+        series: [{
+            name: 'Cost Total',
+            data: arrayTotal
+        }],
+        xaxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'],
+            labels: {
+                style: {
+                    colors: '#9aa0ac',
+                }
+            }
+        },
+        yaxis: {
+            title: {
+                text: 'IDR (thousands)'
+            },
+            labels: {
+                style: {
+                    color: '#9aa0ac',
+                }
+            }
+        },
+        fill: {
+            opacity: 1
+
+        },
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return "Rp. " + val + " thousands"
+                }
+            }
+        }
+    }
+
+    var chart = new ApexCharts(
+        document.querySelector("#chart1"),
+        options
+    );
+
+    chart.render();
+
+
+}
+
+function chart2(data) {
+    $('#chart1').show();
+    let arrayTotal = [];
+    for (let i = 0; i < data.length; i++) {
+        const element = data[i];
+        arrayTotal.push(element['total_harga']);
+    }
+    var options = {
+        chart: {
+            height: 350,
+            type: 'bar',
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: '30%',
+            },
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            show: true,
+            width: 2,
+            colors: ['transparent']
+        },
+        series: [{
+            name: 'Cost Total',
+            data: arrayTotal
+        }],
+        xaxis: {
+            categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+            labels: {
+                style: {
+                    colors: '#9aa0ac',
+                }
+            }
+        },
+        yaxis: {
+            title: {
+                text: 'IDR (thousands)'
+            },
+            labels: {
+                style: {
+                    color: '#9aa0ac',
+                }
+            }
+        },
+        fill: {
+            opacity: 1,
+            colors: ['#ffd766']
+
+        },
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return "Rp. " + val + ""
+                }
+            }
+        }
+    }
+
+    var chart = new ApexCharts(
+        document.querySelector("#chart2"),
+        options
+    );
+
+    chart.render();
+
+
+}
+
+function chart3(data) {
+    $('#chart1').show();
+    let arrayTotal = [];
+    for (let i = 0; i < data.length; i++) {
+        const element = data[i];
+        arrayTotal.push(element['total_harga']);
+    }
+    var options = {
+        chart: {
+            height: 350,
+            type: 'bar',
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: '30%',
+            },
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            show: true,
+            width: 2,
+            colors: ['transparent']
+        },
+        series: [{
+            name: 'Cost Total',
+            data: arrayTotal
+        }],
+        xaxis: {
+            categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+            labels: {
+                style: {
+                    colors: '#9aa0ac',
+                }
+            }
+        },
+        yaxis: {
+            title: {
+                text: 'IDR (thousands)'
+            },
+            labels: {
+                style: {
+                    color: '#9aa0ac',
+                }
+            }
+        },
+        fill: {
+            opacity: 1,
+            colors : ['#ff1a55']
+
+        },
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return "Rp. " + val + ""
+                }
+            }
+        }
+    }
+
+    var chart = new ApexCharts(
+        document.querySelector("#chart3"),
+        options
+    );
+
+    chart.render();
+
+
+}
+    </script>
+        

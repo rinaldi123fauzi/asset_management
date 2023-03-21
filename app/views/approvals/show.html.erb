@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Loan:</strong>
+  <%= @approval.loan %>
+</p>
+
+<p>
+  <strong>Approve by:</strong>
+  <%= @approval.approve_by %>
+</p>
+
+<p>
+  <strong>Approve level:</strong>
+  <%= @approval.approve_level %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @approval.date %>
+</p>
+
+<%= link_to 'Edit', edit_approval_path(@approval) %> |
+<%= link_to 'Back', approvals_path %>

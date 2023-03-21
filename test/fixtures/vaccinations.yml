@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  worker: one
+  tanggal_pelaksanaan: 2022-05-10
+  dosis: 1
+
+two:
+  worker: two
+  tanggal_pelaksanaan: 2022-05-10
+  dosis: 1

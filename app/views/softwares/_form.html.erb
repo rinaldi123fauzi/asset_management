@@ -1,0 +1,47 @@
+<%= form_with(model: software, local: true) do |form| %>
+  <% if software.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(software.errors.count, "error") %> prohibited this software from being saved:</h2>
+
+      <ul>
+      <% software.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :nomor_serial %>
+    <%= form.text_field :nomor_serial %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nama %>
+    <%= form.text_field :nama %>
+  </div>
+
+  <div class="field">
+    <%= form.label :kategori %>
+    <%= form.text_field :kategori %>
+  </div>
+
+  <div class="field">
+    <%= form.label :license_by %>
+    <%= form.text_field :license_by %>
+  </div>
+
+  <div class="field">
+    <%= form.label :expired_date %>
+    <%= form.text_field :expired_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :vendor_id %>
+    <%= form.text_field :vendor_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

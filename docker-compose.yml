@@ -1,0 +1,21 @@
+services:
+  thedatabase:
+    image: postgres:14
+    restart: always
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports: 
+      - '5432:5432'
+  web:
+    platform: linux/x86_64
+    build: .
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    volumes:
+      - ".:/usr/src/app"
+    ports:
+      - "4321:3000"
+    depends_on:
+      - thedatabase

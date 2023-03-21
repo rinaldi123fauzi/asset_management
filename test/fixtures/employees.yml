@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id_pegawai: MyString
+  nama: MyString
+  tempat_lahir: MyString
+  tanggal_lahir: 2023-03-21
+  alamat: MyString
+  id_identitas: MyString
+  nomor_telepon: MyString
+  email: MyString
+  jabatan: MyString
+  work_unit: one
+
+two:
+  id_pegawai: MyString
+  nama: MyString
+  tempat_lahir: MyString
+  tanggal_lahir: 2023-03-21
+  alamat: MyString
+  id_identitas: MyString
+  nomor_telepon: MyString
+  email: MyString
+  jabatan: MyString
+  work_unit: two

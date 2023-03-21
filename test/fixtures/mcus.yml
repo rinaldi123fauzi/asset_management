@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tinggi: 9.99
+  berat: 9.99
+  gol_darah: MyString
+  alergi: MyString
+  start_date: 2020-11-17
+  exp_date: 2020-11-17
+  kontak_lensa: false
+  gigi_palsu: false
+  worker: one
+
+two:
+  tinggi: 9.99
+  berat: 9.99
+  gol_darah: MyString
+  alergi: MyString
+  start_date: 2020-11-17
+  exp_date: 2020-11-17
+  kontak_lensa: false
+  gigi_palsu: false
+  worker: two

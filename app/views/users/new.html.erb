@@ -1,0 +1,121 @@
+<div class="container-fluid">
+  <h1 class="h2 text-primary text-center font-weight-bolder">Form User</h1>
+  <hr>
+  <div class="row" style="justify-content: center;" >
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <%= form_for @user do |f| %>
+            <% if @user.errors.any? %>
+              <div id="error_explanation">
+                <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+                <ul>
+                <% @user.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+                </ul>
+              </div>
+            <% end %>
+            
+            <div class="form-group">
+              <label>Sumber Data</label>
+              <%= f.select :user_type, ["Manual", "LDAP"], { prompt: "Silahkan Dipilih" }, onchange: "changeDs($(this))", class: 'form-control' %>
+            </div>
+            <div class="form-group ldap">
+              <label>User LDAP</label>
+              <%
+              ldap = Net::LDAP.new :host => '192.168.60.159',
+              :port => 389,
+              :auth => {
+                :method => :simple,
+                :username => "cn=manager, dc=pgn-solution, dc=co, dc=id",
+                :password => "4lh4mdul1ll4h"
+              }
+
+              filter = Net::LDAP::Filter.eq("cn", "*")
+              treebase = "dc=pgn-solution, dc=co, dc=id"
+              %>
+              <select class="form-control selectpicker" name="username" id="user_ldap" data-live-search="true">
+                <%
+                  ldap.search(:base => treebase, :filter => filter) do |entry|
+                %>
+                <% if params[:member_id].present?
+                  user = Member.find(params[:member_id])
+                  if user.username == entry["sn"].map(&:inspect).join(', ').gsub('"', '')
+                    selected = "selected"
+                    end
+                  %>
+                    <option value="<%= "#{entry["sn"].map(&:inspect).join(', ').gsub('"', '')}" %>" <%= selected %>><%= "#{entry["sn"].map(&:inspect).join(', ').gsub('"', '')}" %></option>
+                  <% else %>
+                    <option value="<%= "#{entry["sn"].map(&:inspect).join(', ').gsub('"', '')}" %>"><%= "#{entry["sn"].map(&:inspect).join(', ').gsub('"', '')}" %></option>
+                  <% end %>
+                <% end %>
+              </select>
+            </div>
+            <div class="form-group manual ldap">
+              <label>Nama</label>
+              <%= f.text_field :name, class: 'form-control' %>
+            </div>
+              <div class="form-group manual ldap">
+              <label>Jabatan</label>
+              <%= f.text_field :name, class: 'form-control' %>
+            </div>
+            <div class="form-group manual">
+              <label>Username</label>
+              <%= f.text_field :username, class: 'form-control' %>
+            </div>
+            <div class="form-group manual">
+              <label>Email</label>
+              <%= f.email_field :email, class: 'form-control' %>
+            </div>
+            <div class="form-group manual">
+              <label>Password</label>
+              <%= f.password_field :password, class: 'form-control' %>
+            </div>
+            <div class="form-group manual ldap">
+              <label>Role</label>
+              <%= f.collection_select :role_ids, Role.all(), :id, :name, {}, class: 'form-control', multiple: true, id: "select_role" %>
+            </div>
+            <div class="form-group manual ldap">
+              <label class="checkbox c-checkbox c-checkbox-rounded">
+                <%= f.check_box :state, type: 'checkbox' %>
+                Set Aktif
+              </label>
+            </div>
+            <div class="form-group">
+            <button type="submit" class="btn btn-primary px-3 pull-right">Submit</button>
+            <a href="<%= users_path %>" class="btn btn-light px-3 pull-left">Cancel</a>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+
+<script>
+  $(document).ready(function () {
+    $('.manual').hide();
+    $('.ldap').hide();
+  });
+
+  function changeDs(value) {
+    if (value.val() == "Manual") {
+      $('.ldap').hide();
+      $('.manual').show();
+      $("#user_email").prop('disabled', false);
+    } else if (value.val() == "LDAP") {
+      $('.manual').hide();
+      $('.ldap').show();
+      $("#user_email").prop('disabled', true);
+    } else {
+      $('.ldap').hide();
+      $('.manual').hide();
+    }
+  }
+  $('#user_ldap').select2();
+  $('#select_role').select2();
+
+</script>

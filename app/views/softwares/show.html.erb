@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nomor serial:</strong>
+  <%= @software.nomor_serial %>
+</p>
+
+<p>
+  <strong>Nama:</strong>
+  <%= @software.nama %>
+</p>
+
+<p>
+  <strong>Kategori:</strong>
+  <%= @software.kategori %>
+</p>
+
+<p>
+  <strong>License by:</strong>
+  <%= @software.license_by %>
+</p>
+
+<p>
+  <strong>Expired date:</strong>
+  <%= @software.expired_date %>
+</p>
+
+<p>
+  <strong>Vendor:</strong>
+  <%= @software.vendor %>
+</p>
+
+<%= link_to 'Edit', edit_software_path(@software) %> |
+<%= link_to 'Back', softwares_path %>

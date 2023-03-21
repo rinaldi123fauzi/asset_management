@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @loan.user %>
+</p>
+
+<p>
+  <strong>Software:</strong>
+  <%= @loan.software %>
+</p>
+
+<p>
+  <strong>Tool:</strong>
+  <%= @loan.tool %>
+</p>
+
+<p>
+  <strong>Deskripsi:</strong>
+  <%= @loan.deskripsi %>
+</p>
+
+<p>
+  <strong>Jumlah:</strong>
+  <%= @loan.jumlah %>
+</p>
+
+<p>
+  <strong>From date:</strong>
+  <%= @loan.from_date %>
+</p>
+
+<p>
+  <strong>To date:</strong>
+  <%= @loan.to_date %>
+</p>
+
+<p>
+  <strong>Penanggung jawab:</strong>
+  <%= @loan.penanggung_jawab %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @loan.status %>
+</p>
+
+<%= link_to 'Edit', edit_loan_path(@loan) %> |
+<%= link_to 'Back', loans_path %>

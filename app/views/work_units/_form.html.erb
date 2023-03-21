@@ -1,0 +1,22 @@
+<%= form_with(model: work_unit, local: true) do |form| %>
+  <% if work_unit.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(work_unit.errors.count, "error") %> prohibited this work_unit from being saved:</h2>
+
+      <ul>
+      <% work_unit.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :nama %>
+    <%= form.text_field :nama %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

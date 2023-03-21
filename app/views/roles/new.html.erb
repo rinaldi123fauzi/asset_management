@@ -1,0 +1,25 @@
+<div class="container-fluid">
+  <%# <h1 class="h2 text-primary text-center font-weight-bolder">Form Role</h1> %>
+  <%# <hr> %>
+  <div class="card ">
+   <div class="card-header ">
+    <h4 class="">Form Role</h4>
+   </div>
+  </div>
+  <%= render "form" %>
+</div>
+<%# <br> %>
+
+<script>
+  $('#selectAll').click(function() {
+    if (this.checked) {
+      $(':checkbox').each(function() {
+        this.checked = true;                        
+      });
+    } else {
+      $(':checkbox').each(function() {
+        this.checked = false;                        
+      });
+    } 
+  });
+</script>

@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Id pegawai:</strong>
+  <%= @employee.id_pegawai %>
+</p>
+
+<p>
+  <strong>Nama:</strong>
+  <%= @employee.nama %>
+</p>
+
+<p>
+  <strong>Tempat lahir:</strong>
+  <%= @employee.tempat_lahir %>
+</p>
+
+<p>
+  <strong>Tanggal lahir:</strong>
+  <%= @employee.tanggal_lahir %>
+</p>
+
+<p>
+  <strong>Alamat:</strong>
+  <%= @employee.alamat %>
+</p>
+
+<p>
+  <strong>Id identitas:</strong>
+  <%= @employee.id_identitas %>
+</p>
+
+<p>
+  <strong>Nomor telepon:</strong>
+  <%= @employee.nomor_telepon %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @employee.email %>
+</p>
+
+<p>
+  <strong>Jabatan:</strong>
+  <%= @employee.jabatan %>
+</p>
+
+<p>
+  <strong>Work unit:</strong>
+  <%= @employee.work_unit %>
+</p>
+
+<%= link_to 'Edit', edit_employee_path(@employee) %> |
+<%= link_to 'Back', employees_path %>

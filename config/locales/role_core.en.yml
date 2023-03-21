@@ -1,0 +1,60 @@
+en:
+  role_core:
+    models:
+      user: User
+      role: Role
+      induction: Induksi
+      mcu: MCU
+      rapid_test: Rapid Tes
+      site_project: Site Proyek
+      type_worker: Jenis Pekerjaan
+      worker: Pekerja
+    attributes:
+      user:
+        create: Tambah User
+        destroy: Hapus User
+        update: Ubah User
+        read: Detail User
+        index: Daftar User
+      role:
+        create: Tambah Role
+        destroy: Hapus Role
+        update: Ubah Role
+        read: Detail Role
+        index: Daftar Role
+      induction:
+        create: Tambah Induksi
+        destroy: Hapus Induksi
+        update: Ubah Induksi
+        read: Detail Induksi
+        index: Daftar Induksi
+      mcu:
+        create: Tambah MCU
+        destroy: Hapus MCU
+        update: Ubah MCU
+        read: Detail MCU
+        index: Daftar MCU
+      rapid_test:
+        create: Tambah Rapid Tes
+        destroy: Hapus Rapid Tes
+        update: Ubah Rapid Tes
+        read: Detail Rapid Tes
+        index: Daftar Rapid Tes
+      site_project:
+        create: Tambah Site Proyek
+        destroy: Hapus Site Proyek
+        update: Ubah Site Proyek
+        read: Detail Site Proyek
+        index: Daftar Site Proyek
+      type_worker:
+        create: Tambah Jenis Pekerjaan
+        destroy: Hapus Jenis Pekerjaan
+        update: Ubah Jenis Pekerjaan
+        read: Detail Jenis Pekerjaan
+        index: Daftar Jenis Pekerjaan
+      worker:
+        create: Tambah Pekerja
+        destroy: Hapus Pekerja
+        update: Ubah Pekerja
+        read: Detail Pekerja
+        index: Daftar Pekerja

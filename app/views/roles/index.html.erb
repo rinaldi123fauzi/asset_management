@@ -1,0 +1,52 @@
+<div class="container-fluid">
+  <div class="card shadow mb-4">
+      <div class="card-header mt-2">
+        <h4>Data Role</h4>
+        <div class="card-header-form">
+          <% if current_user.can? { |permissions| permissions.role.create? } %>
+            <div class="align-items-center">
+              <%= link_to "+ Data Role", new_role_path, class: "btn btn-primary btn-sm" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable_role" id="table-1">
+            <thead>
+              <tr>
+                <th style="width: 50px;" class="text-center">No</th>
+                <th>Nama Role</th>
+                <th style="width: 150px;" class="text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @roles.each_with_index do |type_worker, index| %>
+              <tr>
+                <td style="width: 50px;" class="text-center"><%= index+1 %></td>
+                <td><%= type_worker.name %></td>
+                <td style="width: 150px;" class="text-center">
+                  <% if current_user.can? { |permissions| permissions.role.update? } %>
+                  <a href="<%= edit_role_path(type_worker) %>" class="btn btn-warning btn-sm">
+                    <i class="fas fa-pencil-alt"></i>
+                  </a>
+                  <% end %>
+                  <% if current_user.can? { |permissions| permissions.role.destroy? } %>
+                  <a href="<%= role_path(type_worker) %>" class="btn btn-danger btn-sm" data-method="DELETE" data-confirm="Are you sure?">
+                    <i class="fas fa-trash-alt"></i>
+                  </a>
+                  <% end %>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+           </table>
+        </div>
+      </div>
+  </div>
+</div>
+
+<script>
+  $("#dataTable_role").dataTable();
+</script>

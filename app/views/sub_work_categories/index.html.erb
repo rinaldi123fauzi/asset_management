@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Sub Work Categories</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Work category</th>
+      <th>Nama subkategori</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sub_work_categories.each do |sub_work_category| %>
+      <tr>
+        <td><%= sub_work_category.work_category %></td>
+        <td><%= sub_work_category.nama_subkategori %></td>
+        <td><%= link_to 'Show', sub_work_category %></td>
+        <td><%= link_to 'Edit', edit_sub_work_category_path(sub_work_category) %></td>
+        <td><%= link_to 'Destroy', sub_work_category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sub Work Category', new_sub_work_category_path %>

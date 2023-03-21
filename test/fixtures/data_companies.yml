@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  category: one
+  cluster: MyString
+  nama_entitas: MyString
+  area: MyString
+  lokasi_kerja: MyString
+  alamat: MyString
+  website: MyString
+  daftar_pekerjaan: MyString
+
+two:
+  category: two
+  cluster: MyString
+  nama_entitas: MyString
+  area: MyString
+  lokasi_kerja: MyString
+  alamat: MyString
+  website: MyString
+  daftar_pekerjaan: MyString

@@ -1,0 +1,402 @@
+
+<div class="">  
+  <div class="card">
+    <div class="card-header" style="background-color: none">
+     <h4>Data Master</h4>
+    </div>
+    <div class="card-body mt-0">
+      <div class="row" style="margin-bottom: 0px;">
+        <div class="col-sm-4">
+          <%= form_tag master_index_path, method: "GET" %>
+          <%= select_tag :pilihan, options_for_select(["Data Kategori Pekerjaan","Data Sub Kategori Pekerjaan","Data Area", "Data Material", "Data Unit","Data Role","Data User"], params[:pilihan]), prompt: "-- Pilih Data --", class: "form-control" %>
+        </div>
+        <button type="submit" class="btn btn-info">Pilih</button>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="card">
+  <% if params[:pilihan].present? %>
+    <% if flash[:alert] == "success updated" %>
+      <div class="alert alert-success alert-dismissible show fade">
+        <div class="alert-body">
+          <button class="close" data-dismiss="alert">
+            <span>&times;</span>
+          </button>
+          Updated has successfull.
+        </div>
+      </div>
+    <% end %>
+    <% if flash[:alert] == "success created" %>
+      <div class="alert alert-success alert-dismissible show fade">
+        <div class="alert-body">
+          <button class="close" data-dismiss="alert">
+            <span>&times;</span>
+          </button>
+          Created has successfull
+        </div>
+      </div>
+    <% end %>
+    <% if flash[:alert] == "success destroyed" %>
+      <div class="alert alert-success alert-dismissible show fade">
+        <div class="alert-body">
+          <button class="close" data-dismiss="alert">
+            <span>&times;</span>
+          </button>
+          Deleted has successfull
+        </div>
+      </div>
+    <% end %>
+    <% if params[:pilihan] == "Data Role" %>
+      <div class="card-header mt-2">
+        <h4>Data Role</h4>
+        <div class="card-header-form">
+          <% if current_user.can? { |permissions| permissions.role.create? } %>
+            <div class="align-items-center">
+              <%= link_to "+ Data Role", new_role_path, class: "btn btn-primary btn-sm" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable_role" width="100%" cellspacing="0" id="table-1">
+            <thead>
+              <tr>
+                <th style="width: 50px;" class="text-center">No</th>
+                <th>Nama Role</th>
+                <th style="width: 150px;" class="text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @roles.each_with_index do |type_worker, index| %>
+              <tr>
+                <td style="width: 50px;" class="text-center"><%= index+1 %></td>
+                <td><%= type_worker.name %></td>
+                <td style="width: 150px;" class="text-center">
+                  <% if current_user.can? { |permissions| permissions.role.update? } %>
+                  <a href="<%= edit_role_path(type_worker) %>" class="btn btn-warning btn-sm">
+                    <i class="fas fa-pencil-alt"></i>
+                  </a>
+                  <% end %>
+                  <% if current_user.can? { |permissions| permissions.role.destroy? } %>
+                  <a href="<%= role_path(type_worker) %>" class="btn btn-danger btn-sm" data-method="DELETE" data-confirm="Are you sure?">
+                    <i class="fas fa-trash-alt"></i>
+                  </a>
+                  <% end %>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% end %>
+
+    <% if params[:pilihan] == "Data User" %>
+      <div class="card-header mt-2">
+        <h4>Data User</h4>
+        <div class="card-header-form">
+            <% if current_user.can? { |permissions| permissions.user.create? } %>
+            <div class="align-items-center">
+                 <%= link_to "+Data User", new_user_path, class: "btn btn-primary btn-sm" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable_user" width="100%" cellspacing="0" id="table-1">
+              <thead>
+                <tr>
+                  <th class="text-center" style="width: 20px;">No</th>
+                  <th>Nama</th>
+                  <th>Jabatan</th>
+                  <th>Username</th>
+                  <th>Role</th>
+                  <th>Status</td>
+                  <th class="text-center" style="width: 100px;">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% @users.each_with_index do |user, index| %>
+                <tr>
+                  <td class="text-center"><%= index+1 %></td>
+                  <td><%= user.name %></td>
+                  <td><%= user.username %></td>
+                  <td><%= user.name %></td>
+                  <td><%= user.role_assignments.each_with_index.map {|role_assignment| "#{role_assignment.role.try(:name)}"}.join(", ") %></td>
+                  <% if user.state %>
+                    <td>Aktif</td>
+                  <% else %>
+                    <td>Tidak Aktif</td>
+                  <% end %>
+                  <td style="width: 150px;" class="text-center">
+                    <% if current_user.can? { |permissions| permissions.user.update? || permissions.user.destroy? } %>
+                      <a href="<%= edit_user_path(user) %>" class="btn btn-warning btn-circle btn-sm">
+                        <i class="fas fa-pencil-alt"></i>
+                      </a>
+                      <%= link_to user_path(user), method: :delete, class: 'btn btn-danger btn-circle btn-sm' do %>
+                        <i class="fas fa-trash-alt"></i>
+                      <% end %>
+                  <% end %>
+                  </td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+    <% end %>
+
+    <% if params[:pilihan] == "Data Kategori Pekerjaan" %>
+        <div class="card-header mt-2">
+          <h4>Data Kategori Pekerjaan</h4>
+          <div class="card-header-form">
+               <%# if current_user.can? { |permissions| permissions.category.create? } %>
+              <div class="align-items-center">
+                <%= link_to "+ Data Kategori", new_work_category_path, class: "btn btn-primary btn-sm" %>
+              </div>
+            <%# end %>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="table-responsive">
+             <table class="table table-bordered" id="dataTable_kategori" width="100%" cellspacing="0" id="table-1">
+              <thead>
+                <tr>
+                  <th style="width: 50px;" class="text-center">No</th>
+                  <th>Kategori</th>
+                  <th style="width: 150px;" class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @work_categories.each_with_index do |category, index| %>
+                <tr>
+                  <td style="width: 50px;" class="text-center"><%= index+1 %></td>
+                  <td><%= category.nama_kategori %></td>
+                  <td style="width: 150px;" class="text-center">
+                    <%# if current_user.can? { |permissions| permissions.category.update? } %>
+                    <a href="<%= edit_work_category_path(category) %>" class="btn btn-warning btn-circle btn-sm">
+                        <i class="fas fa-pencil-alt"></i>
+                    </a>
+                    <%# end %>
+                    <%# if current_user.can? { |permissions| permissions.category.destroy? } %>
+                    <a href="<%= work_category_path(category) %>" class="btn btn-danger btn-circle btn-sm" data-method="DELETE" data-confirm="Are you sure?">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                    <%# end %>
+                  </td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    <% end %>
+
+    <% if params[:pilihan] == "Data Sub Kategori Pekerjaan" %>
+        <div class="card-header mt-2">
+          <h4>Data Sub Kategori Pekerjaan</h4>
+          <div class="card-header-form">
+               <%# if current_user.can? { |permissions| permissions.work_unit.create? } %>
+              <div class="align-items-center">
+                <%= link_to "+ Data Sub Kategori Pekerjaan", new_sub_work_category_path, class: "btn btn-primary btn-sm" %>
+              </div>
+            <%# end %>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="table-responsive">
+             <table class="table table-bordered" id="dataTable_sub_kategori" width="100%" cellspacing="0" id="table-1">
+              <thead>
+                <tr>
+                  <th style="width: 50px;" class="text-center">No</th>
+                  <th>Kategori</th>
+                  <th>Sub Kategori</th>
+                  <th style="width: 150px;" class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @sub_work_categories.each_with_index do |work_unit, index| %>
+                <tr>
+                  <td style="width: 50px;" class="text-center"><%= index+1 %></td>
+                  <td><%= work_unit.work_category.nama_kategori %></td>
+                  <td><%= work_unit.nama_subkategori %></td>
+                  <td style="width: 150px;" class="text-center">
+                    <%# if current_user.can? { |permissions| permissions.work_unit.update? } %>
+                    <a href="<%= edit_sub_work_category_path(work_unit) %>" class="btn btn-warning btn-circle btn-sm">
+                        <i class="fas fa-pencil-alt"></i>
+                    </a>
+                    <%# end %>
+                    <%# if current_user.can? { |permissions| permissions.work_unit.destroy? } %>
+                    <a href="<%= sub_work_category_path(work_unit) %>" class="btn btn-danger btn-circle btn-sm" data-method="DELETE" data-confirm="Are you sure?">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                    <%# end %>
+                  </td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    <% end %>
+    <% if params[:pilihan] == "Data Area" %>
+        <div class="card-header mt-2">
+          <h4>Data Area</h4>
+          <div class="card-header-form">
+               <%# if current_user.can? { |permissions| permissions.work_unit.create? } %>
+              <div class="align-items-center">
+                <%= link_to "+ Data Area", new_area_path, class: "btn btn-primary btn-sm" %>
+              </div>
+            <%# end %>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="table-responsive">
+             <table class="table table-bordered" id="dataTable_area" width="100%" cellspacing="0" id="table-1">
+              <thead>
+                <tr>
+                  <th style="width: 50px;" class="text-center">No</th>
+                  <th>Kategori</th>
+                  <th style="width: 150px;" class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @areas.each_with_index do |work_unit, index| %>
+                <tr>
+                  <td style="width: 50px;" class="text-center"><%= index+1 %></td>
+                  <td><%= work_unit.nama_area %></td>
+                  <td style="width: 150px;" class="text-center">
+                    <%# if current_user.can? { |permissions| permissions.work_unit.update? } %>
+                    <a href="<%= edit_area_path(work_unit) %>" class="btn btn-warning btn-circle btn-sm">
+                        <i class="fas fa-pencil-alt"></i>
+                    </a>
+                    <%# end %>
+                    <%# if current_user.can? { |permissions| permissions.work_unit.destroy? } %>
+                    <a href="<%= area_path(work_unit) %>" class="btn btn-danger btn-circle btn-sm" data-method="DELETE" data-confirm="Are you sure?">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                    <%# end %>
+                  </td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    <% end %>
+    <% if params[:pilihan] == "Data Material" %>
+        <div class="card-header mt-2">
+          <h4>Data Material</h4>
+          <div class="card-header-form">
+               <%# if current_user.can? { |permissions| permissions.work_unit.create? } %>
+              <div class="align-items-center">
+                <%= link_to "+ Data Material", new_material_type_path, class: "btn btn-primary btn-sm" %>
+              </div>
+            <%# end %>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="table-responsive">
+             <table class="table table-bordered" id="dataTable_material" width="100%" cellspacing="0" id="table-1">
+              <thead>
+                <tr>
+                  <th style="width: 50px;" class="text-center">No</th>
+                  <th>Nama Material</th>
+                  <th style="width: 150px;" class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @material_types.each_with_index do |work_unit, index| %>
+                <tr>
+                  <td style="width: 50px;" class="text-center"><%= index+1 %></td>
+                  <td><%= work_unit.nama_material %></td>
+                  <td style="width: 150px;" class="text-center">
+                    <%# if current_user.can? { |permissions| permissions.work_unit.update? } %>
+                    <a href="<%= edit_material_type_path(work_unit) %>" class="btn btn-warning btn-circle btn-sm">
+                        <i class="fas fa-pencil-alt"></i>
+                    </a>
+                    <%# end %>
+                    <%# if current_user.can? { |permissions| permissions.work_unit.destroy? } %>
+                    <a href="<%= material_type_path(work_unit) %>" class="btn btn-danger btn-circle btn-sm" data-method="DELETE" data-confirm="Are you sure?">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                    <%# end %>
+                  </td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    <% end %>
+    <% if params[:pilihan] == "Data Unit" %>
+        <div class="card-header mt-2">
+          <h4>Data Unit</h4>
+          <div class="card-header-form">
+               <%# if current_user.can? { |permissions| permissions.work_unit.create? } %>
+              <div class="align-items-center">
+                <%= link_to "+ Data Unit", new_unit_path, class: "btn btn-primary btn-sm" %>
+              </div>
+            <%# end %>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="table-responsive">
+             <table class="table table-bordered" id="dataTable_unit" width="100%" cellspacing="0" id="table-1">
+              <thead>
+                <tr>
+                  <th style="width: 50px;" class="text-center">No</th>
+                  <th>Nama Unit</th>
+                  <th style="width: 150px;" class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @units.each_with_index do |work_unit, index| %>
+                <tr>
+                  <td style="width: 50px;" class="text-center"><%= index+1 %></td>
+                  <td><%= work_unit.nama_unit %></td>
+                  <td style="width: 150px;" class="text-center">
+                    <%# if current_user.can? { |permissions| permissions.work_unit.update? } %>
+                    <a href="<%= edit_unit_path(work_unit) %>" class="btn btn-warning btn-circle btn-sm">
+                        <i class="fas fa-pencil-alt"></i>
+                    </a>
+                    <%# end %>
+                    <%# if current_user.can? { |permissions| permissions.work_unit.destroy? } %>
+                    <a href="<%= unit_path(work_unit) %>" class="btn btn-danger btn-circle btn-sm" data-method="DELETE" data-confirm="Are you sure?">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                    <%# end %>
+                  </td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    <% end %>
+  <% end %>
+  </div>
+
+</div>
+
+<script>
+  $("#dataTable_role").dataTable();
+  $("#dataTable_user").dataTable();
+  $("#dataTable_kategori").dataTable();
+  $("#dataTable_sub_kategori").dataTable();
+  $("#dataTable_area").dataTable();
+  $("#dataTable_material").dataTable();
+  $("#dataTable_unit").dataTable();
+</script>

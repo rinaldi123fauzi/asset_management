@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  software: one
+  tool: one
+  deskripsi: MyString
+  jumlah: 1
+  from_date: 2023-03-21
+  to_date: 2023-03-21
+  penanggung_jawab: MyString
+  status: 1
+
+two:
+  user: two
+  software: two
+  tool: two
+  deskripsi: MyString
+  jumlah: 1
+  from_date: 2023-03-21
+  to_date: 2023-03-21
+  penanggung_jawab: MyString
+  status: 1

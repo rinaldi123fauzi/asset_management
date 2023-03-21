@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  master_job: one
+  volume: 1
+  harga_satuan: 1
+  total_harga: 1
+  persen_bobot: 9.99
+
+two:
+  master_job: two
+  volume: 1
+  harga_satuan: 1
+  total_harga: 1
+  persen_bobot: 9.99

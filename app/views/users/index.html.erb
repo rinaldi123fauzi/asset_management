@@ -1,0 +1,62 @@
+<div class="container-fluid">
+  <div class="card shadow mb-4">
+      <div class="card-header mt-2">
+        <h4>Data User</h4>
+        <div class="card-header-form">
+          <% if current_user.can? { |permissions| permissions.user.create? } %>
+            <div class="align-items-center">
+              <%= link_to "+ User", new_user_path, class: "btn btn-primary btn-sm" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable_user" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th class="text-center" style="width: 20px;">No</th>
+              <th>Nama</th>
+              <th>Jabatan</th>
+              <th>Username</th>
+              <th>Role</th>
+              <th>Status</td>
+              <th class="text-center" style="width: 100px;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% @users.each_with_index do |user, index| %>
+            <tr>
+              <td class="text-center"><%= index+1 %></td>
+              <td><%= user.name %></td>
+              <td><%= user.username %></td>
+               <td><%= user.name %></td>
+              <td><%= user.role_assignments.each_with_index.map {|role_assignment| "#{role_assignment.role.try(:name)}"}.join(", ") %></td>
+              <% if user.state %>
+                <td>Aktif</td>
+              <% else %>
+                <td>Tidak Aktif</td>
+              <% end %>
+              <td style="width: 150px;" class="text-center">
+                <% if current_user.can? { |permissions| permissions.user.update? || permissions.user.destroy? } %>
+                  <a href="<%= edit_user_path(user) %>" class="btn btn-warning btn-circle btn-sm">
+                    <i class="fas fa-pencil-alt"></i>
+                  </a>
+                  <%= link_to user_path(user), method: :delete, class: 'btn btn-danger btn-circle btn-sm' do %>
+                    <i class="fas fa-trash-alt"></i>
+                  <% end %>
+              <% end %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $("#dataTable_user").dataTable();
+</script>

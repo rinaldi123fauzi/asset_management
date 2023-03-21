@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  software: one
+  tool: one
+  jumlah: MyString
+  status: 1
+
+two:
+  software: two
+  tool: two
+  jumlah: MyString
+  status: 1

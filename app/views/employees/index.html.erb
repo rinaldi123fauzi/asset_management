@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Employees</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Id pegawai</th>
+      <th>Nama</th>
+      <th>Tempat lahir</th>
+      <th>Tanggal lahir</th>
+      <th>Alamat</th>
+      <th>Id identitas</th>
+      <th>Nomor telepon</th>
+      <th>Email</th>
+      <th>Jabatan</th>
+      <th>Work unit</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @employees.each do |employee| %>
+      <tr>
+        <td><%= employee.id_pegawai %></td>
+        <td><%= employee.nama %></td>
+        <td><%= employee.tempat_lahir %></td>
+        <td><%= employee.tanggal_lahir %></td>
+        <td><%= employee.alamat %></td>
+        <td><%= employee.id_identitas %></td>
+        <td><%= employee.nomor_telepon %></td>
+        <td><%= employee.email %></td>
+        <td><%= employee.jabatan %></td>
+        <td><%= employee.work_unit %></td>
+        <td><%= link_to 'Show', employee %></td>
+        <td><%= link_to 'Edit', edit_employee_path(employee) %></td>
+        <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Employee', new_employee_path %>

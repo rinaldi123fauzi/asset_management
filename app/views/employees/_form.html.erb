@@ -1,0 +1,67 @@
+<%= form_with(model: employee, local: true) do |form| %>
+  <% if employee.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
+
+      <ul>
+      <% employee.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :id_pegawai %>
+    <%= form.text_field :id_pegawai %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nama %>
+    <%= form.text_field :nama %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tempat_lahir %>
+    <%= form.text_field :tempat_lahir %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tanggal_lahir %>
+    <%= form.date_select :tanggal_lahir %>
+  </div>
+
+  <div class="field">
+    <%= form.label :alamat %>
+    <%= form.text_field :alamat %>
+  </div>
+
+  <div class="field">
+    <%= form.label :id_identitas %>
+    <%= form.text_field :id_identitas %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nomor_telepon %>
+    <%= form.text_field :nomor_telepon %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :jabatan %>
+    <%= form.text_field :jabatan %>
+  </div>
+
+  <div class="field">
+    <%= form.label :work_unit_id %>
+    <%= form.text_field :work_unit_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
