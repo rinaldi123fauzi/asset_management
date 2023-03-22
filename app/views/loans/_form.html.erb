@@ -1,62 +1,71 @@
-<%= form_with(model: loan, local: true) do |form| %>
-  <% if loan.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(loan.errors.count, "error") %> prohibited this loan from being saved:</h2>
-
-      <ul>
-      <% loan.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<div class="card">
+    <div class="card-header" style="background-color: none">
+     <h4>Tambah Peminjaman</h4>
     </div>
-  <% end %>
+    <div class="card-body mt-0">
+      <div class="row" style="margin-bottom: 0px;">
+        <div class="col-sm-12">
+          <%= form_with(model: loan, local: true) do |form| %>
+            <% if loan.errors.any? %>
+              <div id="error_explanation">
+                <h2><%= pluralize(loan.errors.count, "error") %> prohibited this loan from being saved:</h2>
 
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id %>
+                <ul>
+                <% loan.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+                </ul>
+              </div>
+            <% end %>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <%= form.label :user_id %>
+                 <input type="text" class="form-control" value="<%= current_user.username %>" readonly>
+                </div>
+                <div class="form-group">
+                  <%= form.label :software_id %>
+                  <%= form.text_field :software_id, class: "form-control"%>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <%= form.label :tool_id %>
+                  <%= form.text_field :tool_id, class: "form-control"%>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <%= form.label :deskripsi %>
+                  <%= form.text_field :deskripsi, class: "form-control"%>
+                </div>
+                <div class="form-group">
+                  <%= form.label :jumlah %>
+                  <%= form.number_field :jumlah, class: "form-control"%>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <%= form.label :from_date %>
+                <%= form.date_select :from_date, class: "form-control"%>
+              </div>
+              <div class="col-md-6">
+                <%= form.label :to_date %>
+                <%= form.date_select :to_date, class: "form-control"%>
+              </div>
+              <div class="col-md-6">
+                <%= form.label :penanggung_jawab %>
+                <%= form.text_field :penanggung_jawab, class: "form-control"%>
+              </div>
+            </div>
+            <div class="actions">
+              <%= form.submit%>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 
-  <div class="field">
-    <%= form.label :software_id %>
-    <%= form.text_field :software_id %>
-  </div>
 
-  <div class="field">
-    <%= form.label :tool_id %>
-    <%= form.text_field :tool_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :deskripsi %>
-    <%= form.text_field :deskripsi %>
-  </div>
-
-  <div class="field">
-    <%= form.label :jumlah %>
-    <%= form.number_field :jumlah %>
-  </div>
-
-  <div class="field">
-    <%= form.label :from_date %>
-    <%= form.date_select :from_date %>
-  </div>
-
-  <div class="field">
-    <%= form.label :to_date %>
-    <%= form.date_select :to_date %>
-  </div>
-
-  <div class="field">
-    <%= form.label :penanggung_jawab %>
-    <%= form.text_field :penanggung_jawab %>
-  </div>
-
-  <div class="field">
-    <%= form.label :status %>
-    <%= form.number_field :status %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
