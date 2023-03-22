@@ -10,24 +10,6 @@ class UsersController < ApplicationController
 
   def create
     if params[:username].present?
-      @user = User.new(user_params)
-      @user.username = params[:username]
-      ldap = Net::LDAP.new :host => '192.168.60.159',
-                           :port => 389,
-                           :auth => {
-                               :method => :simple,
-                               :username => "cn=manager, dc=pgn-solution, dc=co, dc=id",
-                               :password => "4lh4mdul1ll4h"
-                           }
-      filter = Net::LDAP::Filter.eq("cn", "#{params[:username]}")
-      treebase = "dc=pgn-solution, dc=co, dc=id"
-      ldap.search(:base => treebase, :filter => filter) do |entry|
-        @email = entry["mail"].map(&:inspect).join(', ').gsub('"', '')
-        @password = entry["userpassword"].map(&:inspect).join(', ').gsub('"', '')
-        # if current_user.username == entry["sn"].map(&:inspect).join(', ').gsub('"', '')
-        #   login_activity current_user.nama + " has been logout "
-        # end
-      end
       @user.email = "#{@email}"
       @user.password = "#{@password}"
       @user.name = params[:user][:name]
@@ -41,7 +23,7 @@ class UsersController < ApplicationController
 
       respond_to do |format|
         if @user.save
-          format.html { redirect_to users_path, notice: 'User was successfully created.' }
+          format.html { redirect_to "/master/index?utf8=✓&pilihan=Data User", notice: 'User was successfully created.' }
           format.json { render :index, status: :created, location: @user }
         else
           format.html { render :new }
@@ -63,7 +45,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.send(meth, user_params)
         bypass_sign_in current_user
-        format.html { redirect_to users_path, notice: 'User was successfully updated.' }
+        format.html { redirect_to "/master/index?utf8=✓&pilihan=Data User", notice: 'User was successfully updated.' }
         format.json { render :index, status: :created, location: @user }
       else
         format.html { render :edit }

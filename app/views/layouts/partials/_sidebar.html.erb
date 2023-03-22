@@ -10,8 +10,6 @@
               <a href="<%= root_path %>" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
             </li>
               <li class="<%= params[:controller] == "master" ? " active" : ""%>"><a class="nav-link" href="<%= master_index_path %>"><i data-feather="file"></i><span>Master Data</span></a></li>
-              <li class="<%= params[:controller] == "master_jobs" ? " active" : ""%>"><a class="nav-link" href="<%= master_jobs_path %>"><i data-feather="file"></i><span>Master Pekerjaan</span></a></li>
-              <li class="<%= params[:controller] == "additional_jobs" ? " active" : ""%>"><a class="nav-link" href="<%= additional_jobs_path %>"><i data-feather="file"></i><span>Kerja Tambah / Kurang</span></a></li>
-              <li class="<%= params[:controller] == "adjustment_jobs" ? " active" : ""%>"><a class="nav-link" href="<%= adjustment_jobs_path %>"><i data-feather="file"></i><span>Penyesuaian Pekerjaan</span></a></li>
+              <li class="<%= params[:controller] == "master_jobs" ? " active" : ""%>"><a class="nav-link" href="<%= master_jobs_path %>"><i data-feather="file"></i><span>List Peminjaman</span></a></li>
           </ul>
         </aside>

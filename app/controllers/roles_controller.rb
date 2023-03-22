@@ -16,7 +16,7 @@ class RolesController < ApplicationController
     @role = Role.new(role_params)
 
     if @role.save
-      redirect_to roles_path, notice: "Role was successfully created."
+      redirect_to "/master/index?utf8=✓&pilihan=Data Role", notice: "Role was successfully created."
     else
       render :new
     end
@@ -24,7 +24,7 @@ class RolesController < ApplicationController
 
   def update
     if @role.update(role_params)
-      redirect_to roles_path, notice: "Role was successfully updated."
+      redirect_to "/master/index?utf8=✓&pilihan=Data Role", notice: "Role was successfully updated."
     else
       render :edit
     end

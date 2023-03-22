@@ -16,6 +16,12 @@
 
 $(document).ready(function(){
     $(".modal-backdrop").remove();
+    $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+          event.preventDefault();
+          return false;
+        }
+    });
 });
 $(document).on('click','#close-modal',function(){
     $(".modal").hide();
