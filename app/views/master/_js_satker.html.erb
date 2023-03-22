@@ -1,0 +1,66 @@
+<script>
+    $(document).on('click','#simpanSatker',function(e){
+        e.preventDefault();
+        var namaSatker = $('#nama_satker').val();
+        var id_satker = $('#id_satker').val();
+
+        if (id_satker == "") {
+            $.ajax({
+                url: "<%= simpanSatker_helper_json_index_path %>",
+                method: 'POST',
+                data : {
+                        authenticity_token: '<%= form_authenticity_token %>',
+                        namaSatker:namaSatker,
+                        },
+                success: function(data)
+                {
+                    if (data[0]['status'] == "tersimpan") {
+                        window.location = "/master/index?pilihan=Data Satuan Kerja";
+                    }
+                }
+            });
+        }else{
+            $.ajax({
+                url: "<%= updateSatker_helper_json_index_path %>",
+                method: 'POST',
+                data : {
+                        authenticity_token: '<%= form_authenticity_token %>',
+                        namaSatker:namaSatker,
+                        id_satker:id_satker
+                        },
+                success: function(data)
+                {
+                    if (data[0]['status'] == "tersimpan") {
+                        window.location = "/master/index?pilihan=Data Satuan Kerja";
+                    }
+                }
+            });
+        }
+    });
+
+    $(document).on('click', '#ubahSatker', function(e){
+        e.preventDefault();
+        var id = $(this).data('id');
+        $('#id_satker').empty();
+        $('#nama_satker').empty();
+        $('.modal-title').text('Ubah Data');
+        $.ajax({
+            url: "<%= getDetailSatker_helper_json_index_path %>",
+            method: 'GET',
+            data : {
+                    id:id
+                    },
+            success: function(data)
+            {
+                $('#id_satker').val(id);
+                $('#nama_satker').val(data[0]['nama']);
+            }
+        });
+    });
+
+    $(document).on('click', '.tambah-satker', function(){
+        $('#nama_satker').val('');
+        $('#id_satker').val('');
+        $('.modal-title').text('Tambah Data');
+    });
+</script>

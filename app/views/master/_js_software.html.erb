@@ -1,3 +1,121 @@
 <script>
-    
+    $(document).on('click', '.tambah-software', function(){
+      const id = 1;
+      $('#nama_software').val('');
+      $('#nomor_serial').val('');
+      $('#kategori').val('');
+      $('#license_by').val('');
+      $('#expired_date').val('');
+      $('#vendor').empty();
+      $('#id_software').val('');
+      $('.modal-title').text('Tambah Data');
+      $.ajax({
+        url: "<%= getAllVendor_helper_json_index_path %>",
+        method: 'GET',
+        data : {
+                id:id
+                },
+        success: function(data)
+        {
+          viewHtml = '';
+          for (let i = 0; i < data[0]['vendor'].length; i++) {
+            const element = data[0]['vendor'][i];
+            viewHtml += '<option value='+element['id']+'>'+element['nama']+'</option>';
+          }
+          $('#vendor').html(viewHtml);
+        }
+      });
+    });
+
+    $(document).on('click','#ubahSoftware', function(e){
+      e.preventDefault();
+      $('#nama_software').val('');
+      $('#nomor_serial').val('');
+      $('#kategori').val('');
+      $('#license_by').empty();
+      $('#expired_date').empty();
+      $('#vendor').empty();
+      var id = $(this).data('id');
+      $('#id_software').val(id);
+      $('.modal-title').text('Ubah Data');
+      $.ajax({
+        url: "<%= getDetailSoftware_helper_json_index_path %>",
+        method: 'GET',
+        data : {
+                id:id
+                },
+        success: function(data)
+        {
+          $('#nama_software').val(data[0]['software']['nama']);
+          $('#nomor_serial').val(data[0]['software']['nomor_serial']);
+          $('#kategori').val(data[0]['software']['kategori']);
+          $('#license_by').val(data[0]['software']['license_by']);
+          $('#expired_date').val(data[0]['software']['expired_date']);
+          viewHtmlVendor = '';
+          for (let i = 0; i < data[0]['vendor'].length; i++) {
+            const element = data[0]['vendor'][i];
+            if (data[0]['software']['vendor_id'] == element['id']) {
+              viewHtmlVendor += '<option value="'+element['id']+'" selected>'+element['nama']+'</option>';
+            }else{
+              viewHtmlVendor += '<option value="'+element['id']+'">'+element['nama']+'</option>';
+            }
+          }
+          $('#vendor').append(viewHtmlVendor);
+        }
+      });
+    });
+
+    $(document).on('click','#simpanSoftware', function(e){
+      e.preventDefault();
+      var namaSoftware = $('#nama_software').val();
+      var nomorSerial = $('#nomor_serial').val();
+      var kategori = $('#kategori').val();
+      var licenseBy = $('#license_by').val();
+      var expiredDate = $('#expired_date').val();
+      var vendor = $('#vendor option:selected').val();
+      var id_software = $('#id_software').val();
+
+      if (id_software == "") {
+        $.ajax({
+            url: "<%= simpanSoftware_helper_json_index_path %>",
+            method: 'POST',
+            data : {
+                    authenticity_token: '<%= form_authenticity_token %>',
+                    namaSoftware:namaSoftware,
+                    nomorSerial:nomorSerial,
+                    kategori:kategori,
+                    licenseBy:licenseBy,
+                    expiredDate:expiredDate,
+                    vendor:vendor
+                    },
+            success: function(data)
+            {
+                if (data[0]['status'] == "tersimpan") {
+                window.location.href = "/master/index?pilihan=Data Software";
+                }
+            }
+        });
+      }else{
+        $.ajax({
+            url: "<%= updateSoftware_helper_json_index_path %>",
+            method: 'POST',
+            data : {
+                    authenticity_token: '<%= form_authenticity_token %>',
+                    namaSoftware:namaSoftware,
+                    nomorSerial:nomorSerial,
+                    kategori:kategori,
+                    licenseBy:licenseBy,
+                    expiredDate:expiredDate,
+                    vendor:vendor,
+                    id_software:id_software
+                    },
+            success: function(data)
+            {
+                if (data[0]['status'] == "tersimpan") {
+                    window.location.href = "/master/index?pilihan=Data Software";
+                }
+            }
+        });
+      }
+    });
 </script>

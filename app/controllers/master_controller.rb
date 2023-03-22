@@ -6,5 +6,6 @@ class MasterController < ApplicationController
     @softwares = Software.all.order("CREATED_AT DESC")
     @tools = Tool.all.order("CREATED_AT DESC")
     @vendors = Vendor.all.order("CREATED_AT DESC")
+    @work_units = WorkUnit.all.order("CREATED_AT DESC")
   end
 end

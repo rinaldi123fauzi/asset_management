@@ -132,6 +132,79 @@ class HelperJsonController < ApplicationController
         ]
     end
 
+    def simpanSoftware
+        @data = Software.create!(
+            'nama' => params[:namaSoftware],
+            'nomor_serial' => params[:nomorSerial],
+            'kategori' => params[:kategori],
+            'license_by' => params[:licenseBy],
+            'expired_date' => params[:expiredDate],
+            'vendor_id' => params[:vendor]
+        )
+        if (@data)
+            render json: [  
+                "status" => "tersimpan"
+            ]
+        end
+    end
+
+    def getDetailSoftware
+        @data = Software.find(params[:id])
+        @vendor = Vendor.all()
+        render json:[
+            "software" => @data,
+            "vendor" => @vendor
+        ]
+    end
+
+    def updateSoftware
+        @data = Software.update(params[:id_software],
+            {
+                :nama => params[:namaSoftware],
+                :nomor_serial => params[:nomorSerial],
+                :kategori => params[:kategori],
+                :license_by => params[:licenseBy],
+                :expired_date => params[:expiredDate],
+                :vendor_id => params[:vendor]
+            }
+        )
+        if (@data)
+            render json: [  
+                "status" => "tersimpan"
+            ]
+        end
+    end
+
+    def simpanSatker
+        WorkUnit.create!(
+            'nama' => params[:namaSatker]
+        )
+        render json: [  
+            "status" => "tersimpan"
+        ]
+    end
+
+    def updateSatker
+        @data = WorkUnit.update(params[:id_satker],
+            {
+                :nama => params[:namaSatker]
+            }
+        )
+        if (@data)
+            render json: [  
+                "status" => "tersimpan",
+                "satker" => params[:namaSatker]
+            ]
+        end
+    end
+
+    def getDetailSatker
+        @data = WorkUnit.find(params[:id])
+        render json:[
+            "nama" => @data.nama
+        ]
+    end
+
     # def searchDataDashboard
     #     area = params[:area]
     #     tahun = params[:tahun]

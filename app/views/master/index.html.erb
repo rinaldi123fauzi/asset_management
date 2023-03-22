@@ -2,13 +2,13 @@
 <div class="">  
   <div class="card">
     <div class="card-header" style="background-color: none">
-     <h4>Data Master</h4>
+     <h4>List Master</h4>
     </div>
     <div class="card-body mt-0">
       <div class="row" style="margin-bottom: 0px;">
         <div class="col-sm-4">
           <%= form_tag master_index_path, method: "GET" %>
-          <%= select_tag :pilihan, options_for_select(["Data Karyawan","Data Software","Data Alat","Vendor","Data Role","Data User"], params[:pilihan]), prompt: "-- Pilih Data --", class: "form-control" %>
+          <%= select_tag :pilihan, options_for_select(["Data Satuan Kerja","Data Karyawan","Data Software","Data Alat","Vendor","Data Role","Data User"], params[:pilihan]), prompt: "-- Pilih Data --", class: "form-control" %>
         </div>
         <button type="submit" class="btn btn-info">Pilih</button>
       </div>
@@ -154,60 +154,133 @@
     <% end %>
 
     <% if params[:pilihan] == "Data Karyawan" %>
-        <div class="card-header mt-2">
-          <h4>Data Karyawan</h4>
-          <div class="card-header-form">
-               <%# if current_user.can? { |permissions| permissions.category.create? } %>
-              <div class="align-items-center">
-                <%= link_to "+ Data Kategori", new_employee_path, class: "btn btn-primary btn-sm" %>
-              </div>
-            <%# end %>
-          </div>
+      <div class="card-header mt-2">
+        <h4>Data Karyawan</h4>
+        <div class="card-header-form">
+              <%# if current_user.can? { |permissions| permissions.category.create? } %>
+            <div class="align-items-center">
+              <%= link_to "+ Data Kategori", new_employee_path, class: "btn btn-primary btn-sm" %>
+            </div>
+          <%# end %>
         </div>
+      </div>
 
-        <div class="card-body">
-          <div class="table-responsive">
-             <table class="table table-bordered" id="dataTable_kategori" width="100%" cellspacing="0" id="table-1">
-              <thead>
-                <tr>
-                  <th style="width: 50px;" class="text-center">No</th>
-                  <th>Nama Pegawai</th>
-                  <th>Nomor Telepon</th>
-                  <th>Jabatan</th>
-                  <th>Satuan Kerja</th>
-                  <th style="width: 150px;" class="text-center">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @employees.each_with_index do |employee, index| %>
-                <tr>
-                  <td style="width: 50px;" class="text-center"><%= index+1 %></td>
-                  <td><%= employee.nama %></td>
-                  <td><%= employee.nomor_telepon %></td>
-                  <td><%= employee.jabatan %></td>
-                  <td><%= employee.work_unit.nama %></td>
-                  <td style="width: 150px;" class="text-center">
-                    <%# if current_user.can? { |permissions| permissions.category.update? } %>
-                    <a href="<%= edit_employee_path(category) %>" class="btn btn-warning btn-circle btn-sm">
-                        <i class="fas fa-pencil-alt"></i>
-                    </a>
-                    <%# end %>
-                    <%# if current_user.can? { |permissions| permissions.category.destroy? } %>
-                    <a href="<%= employee_path(category) %>" class="btn btn-danger btn-circle btn-sm" data-method="DELETE" data-confirm="Are you sure?">
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
-                    <%# end %>
-                  </td>
-                </tr>
-                <% end %>
-              </tbody>
-            </table>
+      <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable_kategori" width="100%" cellspacing="0" id="table-1">
+            <thead>
+              <tr>
+                <th style="width: 50px;" class="text-center">No</th>
+                <th>Nama Pegawai</th>
+                <th>Nomor Telepon</th>
+                <th>Jabatan</th>
+                <th>Satuan Kerja</th>
+                <th style="width: 150px;" class="text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @employees.each_with_index do |employee, index| %>
+              <tr>
+                <td style="width: 50px;" class="text-center"><%= index+1 %></td>
+                <td><%= employee.nama %></td>
+                <td><%= employee.nomor_telepon %></td>
+                <td><%= employee.jabatan %></td>
+                <td><%= employee.work_unit.nama %></td>
+                <td style="width: 150px;" class="text-center">
+                  <%# if current_user.can? { |permissions| permissions.category.update? } %>
+                  <a href="<%= edit_employee_path(category) %>" class="btn btn-warning btn-circle btn-sm">
+                      <i class="fas fa-pencil-alt"></i>
+                  </a>
+                  <%# end %>
+                  <%# if current_user.can? { |permissions| permissions.category.destroy? } %>
+                  <a href="<%= employee_path(category) %>" class="btn btn-danger btn-circle btn-sm" data-method="DELETE" data-confirm="Are you sure?">
+                      <i class="fas fa-trash-alt"></i>
+                  </a>
+                  <%# end %>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% end %>
+
+    <% if params[:pilihan] == "Data Satuan Kerja" %>
+      <div class="modal fade" id="satker" tabindex="-1" role="dialog" aria-labelledby="formModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="formModal"></h5>
+              <button type="button" class="close" id="close-modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <input type="text" id="id_satker">
+                <div class="form-group">
+                  <label>Nama</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="nama_satker">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary m-t-15 waves-effect" id="simpanSatker">Simpan</button>
+              </form>
+            </div>
           </div>
         </div>
+      </div>
+      <div class="card-header mt-2">
+        <h4>Data Satuan Kerja</h4>
+        <div class="card-header-form">
+              <%# if current_user.can? { |permissions| permissions.category.create? } %>
+            <div class="align-items-center">
+              <%# <%= link_to "+ Data Kategori", new_employee_path, class: "btn btn-primary btn-sm" %>
+              <button type="button" class="btn btn-primary btn-sm tambah-satker" data-backdrop="true" data-toggle="modal" data-target="#satker">+Tambah</button>
+            </div>
+          <%# end %>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable_kategori" width="100%" cellspacing="0" id="table-1">
+            <thead>
+              <tr>
+                <th style="width: 50px;" class="text-center">No</th>
+                <th>Nama</th>
+                <th style="width: 150px;" class="text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @work_units.each_with_index do |work_unit, index| %>
+              <tr>
+                <td style="width: 50px;" class="text-center"><%= index+1 %></td>
+                <td><%= work_unit.nama %></td>
+                <td style="width: 150px;" class="text-center">
+                  <%# if current_user.can? { |permissions| permissions.category.update? } %>
+                  <a href="#" class="btn btn-warning btn-circle btn-sm" id="ubahSatker" data-toggle="modal" data-target="#satker" data-id="<%= work_unit.id %>">
+                      <i class="fas fa-pencil-alt"></i>
+                  </a>
+                  <%# end %>
+                  <%# if current_user.can? { |permissions| permissions.category.destroy? } %>
+                  <a href="<%= work_unit_path(work_unit) %>" class="btn btn-danger btn-circle btn-sm" data-method="DELETE" data-confirm="Are you sure?">
+                      <i class="fas fa-trash-alt"></i>
+                  </a>
+                  <%# end %>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
     <% end %>
 
     <% if params[:pilihan] == "Data Software" %>
-        <div class="modal fade" id="alat" tabindex="-1" role="dialog" aria-labelledby="formModal"
+        <div class="modal fade" id="software" tabindex="-1" role="dialog" aria-labelledby="formModal"
           aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -219,16 +292,17 @@
               </div>
               <div class="modal-body">
                 <form>
+                  <input type="hidden" id="id_software">
                   <div class="form-group">
                     <label>Nama</label>
                     <div class="input-group">
-                      <input type="text" class="form-control" placeholder="Nama" id="nama_software">
+                      <input type="text" class="form-control" id="nama_software">
                     </div>
                   </div>
                   <div class="form-group">
                     <label>Nomor Serial</label>
                     <div class="input-group">
-                      <input type="text" class="form-control" placeholder="Nama" id="nomor_serial">
+                      <input type="text" class="form-control" id="nomor_serial">
                     </div>
                   </div>
                   <div class="form-group">
@@ -240,13 +314,13 @@
                   <div class="form-group">
                     <label>License By</label>
                     <div class="input-group">
-                      <input type="text" class="form-control" name="license_by">
+                      <input type="text" class="form-control" id="license_by">
                     </div>
                   </div>
                   <div class="form-group">
                     <label>Expired Date</label>
                     <div class="input-group">
-                      <input type="date" class="form-control" name="license_by">
+                      <input type="date" class="form-control" id="expired_date">
                     </div>
                   </div>
                   <div class="form-group">
@@ -255,7 +329,7 @@
                       <select id="vendor" class="form-control"></select>
                     </div>
                   </div>
-                  <button type="submit" class="btn btn-primary m-t-15 waves-effect" id="simpanAlat">Simpan</button>
+                  <button type="submit" class="btn btn-primary m-t-15 waves-effect" id="simpanSoftware">Simpan</button>
                 </form>
               </div>
             </div>
@@ -266,7 +340,8 @@
           <div class="card-header-form">
                <%# if current_user.can? { |permissions| permissions.work_unit.create? } %>
               <div class="align-items-center">
-                <%= link_to "+ Data Software", new_software_path, class: "btn btn-primary btn-sm" %>
+                <%# <%= link_to "+ Data Software", new_software_path, class: "btn btn-primary btn-sm" %>
+                <button type="button" class="btn btn-primary btn-sm tambah-software" data-backdrop="true" data-toggle="modal" data-target="#software">+Tambah</button>
               </div>
             <%# end %>
           </div>
@@ -295,7 +370,7 @@
                   <td><%= software.kategori %></td>
                   <td style="width: 150px;" class="text-center">
                     <%# if current_user.can? { |permissions| permissions.work_unit.update? } %>
-                    <a href="<%= edit_software_path(software) %>" class="btn btn-warning btn-circle btn-sm">
+                    <a href="#" class="btn btn-warning btn-circle btn-sm" id="ubahSoftware" data-toggle="modal" data-target="#software" data-id="<%= software.id %>">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
                     <%# end %>
@@ -503,3 +578,5 @@
 
 <%= render "js_vendor" %>
 <%= render "js_alat" %>
+<%= render "js_software" %>
+<%= render "js_satker" %>

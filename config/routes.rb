@@ -42,8 +42,14 @@ Rails.application.routes.draw do
     get :getDetailVendor, on: :collection
     get :getAllVendor, on: :collection
     get :getDetailAlat, on: :collection
+    get :getDetailSoftware, on: :collection
     post :simpanAlat, on: :collection
+    post :simpanSoftware, on: :collection
     post :updateAlat, on: :collection
+    post :updateSoftware, on: :collection
+    post :updateSatker, on: :collection
+    post :simpanSatker, on: :collection
+    get :getDetailSatker, on: :collection
     member do
       get "/sub_work_category", to: "helper_json#getSubWorkCategory"
     end
