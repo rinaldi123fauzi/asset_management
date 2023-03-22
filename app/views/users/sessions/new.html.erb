@@ -25,9 +25,9 @@
 
 <%= render "users/shared/links" %>-->
 
-<div class="container">
+<<div class="container">
   <!-- Outer Row -->
-  <div class="row justify-content-end">
+  <div class="row justify-content-center mt-4">
     <div class="col-md-5">
       <div class="card o-hidden border-0 shadow-lg my-5">
         <div class="card-body p-0">
@@ -36,7 +36,8 @@
             <div class="col-md">
               <div class="p-5">
                 <div class="text-center">
-                  <%= image_tag "logo.jpeg", class: "img-fluid", style:"height: 45px;" %>
+                  <%= image_tag "sena.png", class: "img-fluid", style:"height: 45px;" %>
+                  <h5 style="color: blue;">Asset Management</h5>
                 </div>
                 <hr>
                 <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "user"}) do |f| %>
@@ -55,7 +56,7 @@
                   <%= f.submit "Login", class: "btn btn-primary btn-user btn-block" %>
                   <hr>
                   <div class="copyright text-center my-auto">
-                       <span>Copyright &copy;2023 - Asset Management</span>
+                       <span>&copy;<%= Date.today.year %> <br>PT. Solusi Energi Nusantara</span>
                     </div>
                 <% end %>
               </div>

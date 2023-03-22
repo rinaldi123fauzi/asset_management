@@ -1,0 +1,128 @@
+<script>
+    $(document).on('click', '.tambah-alat', function(){
+      const id = 1;
+      $('#nama_alat').val('');
+      $('#nomor_serial').val('');
+      $('#kategori').val('');
+      $('#sifat').empty();
+      $('#vendor').empty();
+      $('#id_alat').val('');
+      $('.modal-title').text('Tambah Alat');
+      $.ajax({
+        url: "<%= getAllVendor_helper_json_index_path %>",
+        method: 'GET',
+        data : {
+                id:id
+                },
+        success: function(data)
+        {
+          viewHtml = '';
+          for (let i = 0; i < data[0]['vendor'].length; i++) {
+            const element = data[0]['vendor'][i];
+            viewHtml += '<option value='+element['id']+'>'+element['nama']+'</option>';
+          }
+          $('#vendor').html(viewHtml);
+
+          viewHtmlSifat = '';
+          viewHtmlSifat += '<option value="milik_sendiri">Milik Sendiri</option>';
+          viewHtmlSifat += '<option value="sewa">Sewa</option>';
+          $('#sifat').append(viewHtmlSifat);
+        }
+      });
+    });
+
+    $(document).on('click','#ubahAlat', function(e){
+      e.preventDefault();
+      $('#nama_alat').val('');
+      $('#nomor_serial').val('');
+      $('#kategori').val('');
+      $('#sifat').empty();
+      $('#vendor').empty();
+      var id = $(this).data('id');
+      $('#id_alat').val(id);
+      $('.modal-title').text('Ubah Data');
+      $.ajax({
+        url: "<%= getDetailAlat_helper_json_index_path %>",
+        method: 'GET',
+        data : {
+                id:id
+                },
+        success: function(data)
+        {
+          $('#nama_alat').val(data[0]['tool']['nama']);
+          $('#nomor_serial').val(data[0]['tool']['nomor_serial']);
+          $('#kategori').val(data[0]['tool']['kategori']);
+          if (data[0]['tool']['sifat'] == "milik_sendiri") {
+            viewHtmlSifat = '';
+            viewHtmlSifat += '<option value="milik_sendiri" selected>Milik Sendiri</option>';
+            viewHtmlSifat += '<option value="sewa">Sewa</option>';
+          }else if(data[0]['tool']['sifat'] == "sewa"){
+            viewHtmlSifat += '<option value="milik_sendiri">Milik Sendiri</option>';
+            viewHtmlSifat += '<option value="sewa" selected>Sewa</option>';
+          }
+          $('#sifat').html(viewHtmlSifat);
+          viewHtmlVendor = '';
+          for (let i = 0; i < data[0]['vendor'].length; i++) {
+            const element = data[0]['vendor'][i];
+            if (data[0]['tool']['vendor_id'] == element['id']) {
+              viewHtmlVendor += '<option value="'+element['id']+'" selected>'+element['nama']+'</option>';
+            }else{
+              viewHtmlVendor += '<option value="'+element['id']+'">'+element['nama']+'</option>';
+            }
+          }
+          $('#vendor').append(viewHtmlVendor);
+        }
+      });
+    });
+
+    $(document).on('click','#simpanAlat', function(e){
+      e.preventDefault();
+      var namaAlat = $('#nama_alat').val();
+      var nomorSerial = $('#nomor_serial').val();
+      var kategori = $('#kategori').val();
+      var sifat = $('#sifat option:selected').val();
+      var vendor = $('#vendor option:selected').val();
+      var id_alat = $('#id_alat').val();
+
+      if (id_alat == "") {
+        $.ajax({
+            url: "<%= simpanAlat_helper_json_index_path %>",
+            method: 'POST',
+            data : {
+                    authenticity_token: '<%= form_authenticity_token %>',
+                    namaAlat:namaAlat,
+                    nomorSerial:nomorSerial,
+                    kategori:kategori,
+                    sifat:sifat,
+                    vendor:vendor
+                    },
+            success: function(data)
+            {
+                if (data[0]['status'] == "tersimpan") {
+                window.location.href = "/master/index?pilihan=Data Alat";
+                }
+            }
+        });
+      }else{
+        $.ajax({
+            url: "<%= updateAlat_helper_json_index_path %>",
+            method: 'POST',
+            data : {
+                    authenticity_token: '<%= form_authenticity_token %>',
+                    namaAlat:namaAlat,
+                    nomorSerial:nomorSerial,
+                    kategori:kategori,
+                    sifat:sifat,
+                    vendor:vendor,
+                    id_alat:id_alat
+                    },
+            success: function(data)
+            {
+                if (data[0]['status'] == "tersimpan") {
+                    window.location.href = "/master/index?pilihan=Data Alat";
+                }
+            }
+        });
+      }
+    });
+</script>

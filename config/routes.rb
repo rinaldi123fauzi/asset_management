@@ -37,7 +37,13 @@ Rails.application.routes.draw do
   resources :helper_json do
     post :getJudulPekerjaan, on: :collection
     post :getNamaPekerjaan, on: :collection
-    post :searchDataDashboard, on: :collection
+    post :simpanVendor, on: :collection
+    post :updateVendor, on: :collection
+    get :getDetailVendor, on: :collection
+    get :getAllVendor, on: :collection
+    get :getDetailAlat, on: :collection
+    post :simpanAlat, on: :collection
+    post :updateAlat, on: :collection
     member do
       get "/sub_work_category", to: "helper_json#getSubWorkCategory"
     end
