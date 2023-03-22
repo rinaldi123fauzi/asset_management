@@ -154,12 +154,109 @@
     <% end %>
 
     <% if params[:pilihan] == "Data Karyawan" %>
+      <div class="modal fade" id="karyawan" tabindex="-1" role="dialog" aria-labelledby="formModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="formModal"></h5>
+              <button type="button" class="close" id="close-modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <input type="hidden" id="id_karyawan">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Id Pegawai</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="id_pegawai">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Tempat Lahir</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="tempat_lahir">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Nama</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="nama_pegawai">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Tanggal Lahir</label>
+                      <div class="input-group">
+                        <input type="date" class="form-control" id="tanggal_lahir">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Alamat</label>
+                      <div class="input-group">
+                        <textarea class="form-control" id="alamat"></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>No Telepon</label>
+                      <div class="input-group">
+                        <input type="number" class="form-control" id="nomor_telepon">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Id Identitas</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="id_identitas">
+                      </div>
+                    </div>
+                    <div class="form-group" style="padding-top: 20px;">
+                      <label>Email</label>
+                      <div class="input-group">
+                        <input type="email" class="form-control" id="email">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Jabatan</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="jabatan">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Satuan Kerja</label>
+                      <div class="input-group">
+                        <select class="form-control" id="satker"></select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary m-t-15 waves-effect" id="simpanKaryawan">Simpan</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notification"></div>
+
       <div class="card-header mt-2">
         <h4>Data Karyawan</h4>
         <div class="card-header-form">
               <%# if current_user.can? { |permissions| permissions.category.create? } %>
             <div class="align-items-center">
-              <%= link_to "+ Data Kategori", new_employee_path, class: "btn btn-primary btn-sm" %>
+              <%# <%= link_to "+ Data Kategori", new_employee_path, class: "btn btn-primary btn-sm" %>
+              <button type="button" class="btn btn-primary btn-sm tambah-karyawan" data-backdrop="true" data-toggle="modal" data-target="#karyawan">+Tambah</button>
             </div>
           <%# end %>
         </div>
@@ -188,12 +285,12 @@
                 <td><%= employee.work_unit.nama %></td>
                 <td style="width: 150px;" class="text-center">
                   <%# if current_user.can? { |permissions| permissions.category.update? } %>
-                  <a href="<%= edit_employee_path(category) %>" class="btn btn-warning btn-circle btn-sm">
+                  <a href="#" class="btn btn-warning btn-circle btn-sm" id="ubahKaryawan" data-toggle="modal" data-target="#karyawan" data-id="<%= employee.id %>">
                       <i class="fas fa-pencil-alt"></i>
                   </a>
                   <%# end %>
                   <%# if current_user.can? { |permissions| permissions.category.destroy? } %>
-                  <a href="<%= employee_path(category) %>" class="btn btn-danger btn-circle btn-sm" data-method="DELETE" data-confirm="Are you sure?">
+                  <a href="#" class="btn btn-danger btn-circle btn-sm" id="hapusKaryawan" data-id="<%= employee.id %>" data-confirm="Are you sure?">
                       <i class="fas fa-trash-alt"></i>
                   </a>
                   <%# end %>
@@ -476,7 +573,7 @@
                   </a>
                   <%# end %>
                   <%# if current_user.can? { |permissions| permissions.work_unit.destroy? } %>
-                  <a href="<%= tool_path(tool) %>" class="btn btn-danger btn-circle btn-sm" data-method="DELETE" data-confirm="Are you sure?">
+                  <a href="#" class="btn btn-danger btn-circle btn-sm" id="hapusAlat" data-id="<%= tool.id %>" data-confirm="Are you sure?">
                       <i class="fas fa-trash-alt"></i>
                   </a>
                   <%# end %>
@@ -580,3 +677,4 @@
 <%= render "js_alat" %>
 <%= render "js_software" %>
 <%= render "js_satker" %>
+<%= render "js_karyawan" %>

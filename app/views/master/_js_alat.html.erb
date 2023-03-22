@@ -127,4 +127,23 @@
         });
       }
     });
+
+     $(document).on('click','#hapusAlat',function(e){
+        e.preventDefault();
+        var id = $(this).data('id');
+        $.ajax({
+          url: "<%= hapusAlat_helper_json_index_path %>",
+          method: 'POST',
+          data : {
+                  authenticity_token: '<%= form_authenticity_token %>',
+                  id:id
+                  },
+          success: function(data)
+          {
+              if (data[0]['status'] == "terhapus") {
+                  window.location.href = "/master/index?pilihan=Data Karyawan";
+              }
+          }
+        });
+    });
 </script>

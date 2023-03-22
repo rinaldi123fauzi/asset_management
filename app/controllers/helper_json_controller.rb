@@ -92,6 +92,13 @@ class HelperJsonController < ApplicationController
         ]
     end
 
+    def getAllSatker
+        @data = WorkUnit.all()
+        render json:[
+            "satker" => @data
+        ]
+    end
+
     def simpanAlat
         Tool.create!(
             'nama' => params[:namaAlat],
@@ -203,6 +210,75 @@ class HelperJsonController < ApplicationController
         render json:[
             "nama" => @data.nama
         ]
+    end
+
+    def simpanKaryawan
+        Employee.create!(
+            id_pegawai: params[:id_pegawai],
+            nama: params[:nama_pegawai],
+            tempat_lahir: params[:tempat_lahir],
+            tanggal_lahir: params[:tanggal_lahir],
+            alamat: params[:alamat],
+            id_identitas: params[:id_identitas],
+            nomor_telepon: params[:nomor_telepon],
+            email: params[:email],
+            jabatan: params[:jabatan],
+            work_unit_id: params[:satker]
+        )
+        render json: [  
+            "status" => "tersimpan",
+            "satker" => params[:id_pegawai]
+        ]
+    end
+
+    def updateKaryawan
+        @data = Employee.update(params[:id_karyawan],
+            {
+                id_pegawai: params[:id_pegawai],
+                nama: params[:nama_pegawai],
+                tempat_lahir: params[:tempat_lahir],
+                tanggal_lahir: params[:tanggal_lahir],
+                alamat: params[:alamat],
+                id_identitas: params[:id_identitas],
+                nomor_telepon: params[:nomor_telepon],
+                email: params[:email],
+                jabatan: params[:jabatan],
+                work_unit_id: params[:satker]
+            }
+        )
+        if (@data)
+            render json: [  
+                "status" => "tersimpan",
+                "satker" => params[:id_pegawai]
+            ]
+        end
+    end
+
+    def getDetailKaryawan
+        @data = Employee.find(params[:id])
+        @satker = WorkUnit.all()
+        render json:[
+            "karyawan" => @data,
+            "satker" => @satker
+        ]
+    end
+
+    def hapusKaryawan
+        @data = Employee.find(params[:id]).destroy
+        if (@data)
+            render json: [  
+                "status" => "terhapus",
+            ]
+        end
+    end
+
+    def hapusAlat
+        @data = Tool.find(params[:id]).destroy
+        if (@data)
+            render json: [  
+                "status" => "terhapus",
+            ]
+        end
     end
 
     # def searchDataDashboard

@@ -50,6 +50,12 @@ Rails.application.routes.draw do
     post :updateSatker, on: :collection
     post :simpanSatker, on: :collection
     get :getDetailSatker, on: :collection
+    get :getAllSatker, on: :collection
+    post :simpanKaryawan, on: :collection
+    post :updateKaryawan, on: :collection
+    get :getDetailKaryawan, on: :collection
+    post :hapusKaryawan, on: :collection
+    post :hapusAlat, on: :collection
     member do
       get "/sub_work_category", to: "helper_json#getSubWorkCategory"
     end

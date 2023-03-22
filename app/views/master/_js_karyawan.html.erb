@@ -1,0 +1,166 @@
+<script>
+    $(document).on('click', '.tambah-karyawan', function(){
+      const id = 1;
+      $('#id_pegawai').val('');
+      $('#nama_pegawai').val('');
+      $('#tempat_lahir').val('');
+      $('#tanggal_lahir').val('');
+      $('#alamat').val('');
+      $('#id_identitas').empty();
+      $('#nomor_telepon').val('');
+      $('#email').val('');
+      $('#jabatan').val('');
+      $('#satker').val('');
+      $('.modal-title').text('Tambah Data');
+      $.ajax({
+        url: "<%= getAllSatker_helper_json_index_path %>",
+        method: 'GET',
+        data : {
+                id:id
+                },
+        success: function(data)
+        {
+          viewHtml = '';
+          for (let i = 0; i < data[0]['satker'].length; i++) {
+            const element = data[0]['satker'][i];
+            viewHtml += '<option value='+element['id']+'>'+element['nama']+'</option>';
+          }
+          $('#satker').html(viewHtml);
+        }
+      });
+    });
+
+    $(document).on('click','#ubahKaryawan', function(e){
+      e.preventDefault();
+      $('#id_pegawai').val('');
+      $('#nama_pegawai').val('');
+      $('#tempat_lahir').val('');
+      $('#tanggal_lahir').val('');
+      $('#alamat').val('');
+      $('#id_identitas').empty();
+      $('#nomor_telepon').val('');
+      $('#email').val('');
+      $('#jabatan').val('');
+      $('#satker').val('');
+      var id = $(this).data('id');
+      $('#id_karyawan').val(id);
+      $('.modal-title').text('Ubah Data');
+      $.ajax({
+        url: "<%= getDetailKaryawan_helper_json_index_path %>",
+        method: 'GET',
+        data : {
+                id:id
+                },
+        success: function(data)
+        {
+            $('#id_pegawai').val(data[0]['karyawan']['id_pegawai']);
+            $('#nama_pegawai').val(data[0]['karyawan']['nama']);
+            $('#tempat_lahir').val(data[0]['karyawan']['tempat_lahir']);
+            $('#tanggal_lahir').val(data[0]['karyawan']['tanggal_lahir']);
+            $('#alamat').val(data[0]['karyawan']['alamat']);
+            $('#id_identitas').val(data[0]['karyawan']['id_identitas']);
+            $('#nomor_telepon').val(data[0]['karyawan']['nomor_telepon']);
+            $('#email').val(data[0]['karyawan']['email']);
+            $('#jabatan').val(data[0]['karyawan']['jabatan']);
+            viewHtmlVendor = '';
+            for (let i = 0; i < data[0]['satker'].length; i++) {
+                const element = data[0]['satker'][i];
+                if (data[0]['karyawan']['work_unit_id'] == element['id']) {
+                    viewHtmlVendor += '<option value="'+element['id']+'" selected>'+element['nama']+'</option>';
+                }else{
+                    viewHtmlVendor += '<option value="'+element['id']+'">'+element['nama']+'</option>';
+                }
+            }
+            $('#satker').append(viewHtmlVendor);
+        }
+      });
+    });
+
+    $(document).on('click','#simpanKaryawan', function(e){
+      e.preventDefault();
+        var id_pegawai = $('#id_pegawai').val();
+        var nama_pegawai =  $('#nama_pegawai').val();
+        var tempat_lahir = $('#tempat_lahir').val();
+        var tanggal_lahir = $('#tanggal_lahir').val();
+        var alamat = $('#alamat').val();
+        var id_identitas = $('#id_identitas').val();
+        var nomor_telepon = $('#nomor_telepon').val();
+        var email = $('#email').val();
+        var jabatan = $('#jabatan').val();
+        var satker = $('#satker option:selected').val();
+      var id_karyawan = $('#id_karyawan').val();
+      $('#simpanKaryawan').text('Loading...');
+
+      if (id_karyawan == "") {
+        $.ajax({
+            url: "<%= simpanKaryawan_helper_json_index_path %>",
+            method: 'POST',
+            data : {
+                    authenticity_token: '<%= form_authenticity_token %>',
+                    id_pegawai:id_pegawai,
+                    nama_pegawai:nama_pegawai,
+                    tempat_lahir:tempat_lahir,
+                    tanggal_lahir:tanggal_lahir,
+                    alamat:alamat,
+                    id_identitas:id_identitas,
+                    nomor_telepon:nomor_telepon,
+                    email:email,
+                    jabatan:jabatan,
+                    satker:satker
+                    },
+            success: function(data)
+            {
+                if (data[0]['status'] == "tersimpan") {
+                window.location.href = "/master/index?pilihan=Data Karyawan";
+                }
+            }
+        });
+      }else{
+        $.ajax({
+            url: "<%= updateKaryawan_helper_json_index_path %>",
+            method: 'POST',
+            data : {
+                    authenticity_token: '<%= form_authenticity_token %>',
+                    id_pegawai:id_pegawai,
+                    nama_pegawai:nama_pegawai,
+                    tempat_lahir:tempat_lahir,
+                    tanggal_lahir:tanggal_lahir,
+                    alamat:alamat,
+                    id_identitas:id_identitas,
+                    nomor_telepon:nomor_telepon,
+                    email:email,
+                    jabatan:jabatan,
+                    satker:satker,
+                    id_karyawan:id_karyawan
+                    },
+            success: function(data)
+            {
+                if (data[0]['status'] == "tersimpan") {
+                  setInterval(function() {
+                    window.location.href = "/master/index?pilihan=Data Karyawan";
+                  }, 2000);
+                }
+            }
+        });
+      }
+    });
+
+    $(document).on('click','#hapusKaryawan',function(e){
+        e.preventDefault();
+        var id = $(this).data('id');
+        $.ajax({
+                url: "<%= hapusKaryawan_helper_json_index_path %>",
+                method: 'POST',
+                data : {
+                        authenticity_token: '<%= form_authenticity_token %>',
+                        id:id
+                        },
+                success: function(data)
+                {
+                    if (data[0]['status'] == "terhapus") {
+                        window.location.href = "/master/index?pilihan=Data Karyawan";
+                    }
+                }
+        });
+    });
+</script>
