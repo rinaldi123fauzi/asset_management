@@ -83,7 +83,7 @@
       var sifat = $('#sifat option:selected').val();
       var vendor = $('#vendor option:selected').val();
       var id_alat = $('#id_alat').val();
-
+      $('#simpanAlat').text('Loading...');
       if (id_alat == "") {
         $.ajax({
             url: "<%= simpanAlat_helper_json_index_path %>",
@@ -119,7 +119,9 @@
             success: function(data)
             {
                 if (data[0]['status'] == "tersimpan") {
+                  setInterval(function() {
                     window.location.href = "/master/index?pilihan=Data Alat";
+                  }, 2000);
                 }
             }
         });

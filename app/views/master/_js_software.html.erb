@@ -74,6 +74,7 @@
       var expiredDate = $('#expired_date').val();
       var vendor = $('#vendor option:selected').val();
       var id_software = $('#id_software').val();
+      $('#simpanSoftware').text('Loading...');
 
       if (id_software == "") {
         $.ajax({
@@ -112,7 +113,9 @@
             success: function(data)
             {
                 if (data[0]['status'] == "tersimpan") {
+                  setInterval(function() {
                     window.location.href = "/master/index?pilihan=Data Software";
+                  }, 2000);
                 }
             }
         });

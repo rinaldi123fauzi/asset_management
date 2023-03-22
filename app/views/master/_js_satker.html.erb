@@ -3,7 +3,7 @@
         e.preventDefault();
         var namaSatker = $('#nama_satker').val();
         var id_satker = $('#id_satker').val();
-
+        $('#simpanSatker').text('Loading...');
         if (id_satker == "") {
             $.ajax({
                 url: "<%= simpanSatker_helper_json_index_path %>",
@@ -31,7 +31,9 @@
                 success: function(data)
                 {
                     if (data[0]['status'] == "tersimpan") {
-                        window.location = "/master/index?pilihan=Data Satuan Kerja";
+                        setInterval(function() {
+                            window.location = "/master/index?pilihan=Data Satuan Kerja";
+                        }, 2000);
                     }
                 }
             });

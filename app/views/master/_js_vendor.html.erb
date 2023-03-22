@@ -5,7 +5,7 @@ $(document).on('click','#simpanVendor',function(e){
     var alamat = $('#alamat').val();
     var kategori = $('#kategori').val();
     var id_vendor = $('#id_vendor').val();
-
+    $('#simpanVendor').text('Loading...');
     if (id_vendor == "") {
         $.ajax({
             url: "<%= simpanVendor_helper_json_index_path %>",
@@ -37,7 +37,9 @@ $(document).on('click','#simpanVendor',function(e){
             success: function(data)
             {
                 if (data[0]['status'] == "tersimpan") {
+                  setInterval(function() {
                     window.location = "/master/index?pilihan=Vendor";
+                  }, 2000);
                 }
             }
         });
