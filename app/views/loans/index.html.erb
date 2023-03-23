@@ -34,8 +34,8 @@
             <tr>
               <td class="text-center"><%= index+1 %></td>
               <td><%= loan.user.username %></td>
-              <td><%= loan.software.nama %></td>
-              <td><%= loan.tool.nama %></td>
+              <td><%= loan.software.try(:nama) %></td>
+              <td><%= loan.tool.try(:nama) %></td>
               <td><%= loan.deskripsi %></td>
               <td><%= loan.jumlah %></td>
               <td><%= loan.from_date %></td>
@@ -43,24 +43,28 @@
               <td><%= loan.penanggung_jawab %></td>
               <td><%= loan.status %></td>
               <td style="width: 150px;" class="text-center">
-                <% if current_user.can? { |permissions| permissions.loan.update? || permissions.loan.destroy? } %>
-                  <a href="<%= edit_loan_path(user) %>" class="btn btn-warning btn-circle btn-sm">
+                <%
+=begin%>
+ <% if current_user.can? { |permissions| permissions.loan.update? || permissions.loan.destroy? } %> 
+<%
+=end%>
+                  <a href="<%= edit_loan_path(loan) %>" class="btn btn-warning btn-circle btn-sm">
                     <i class="fas fa-pencil-alt"></i>
                   </a>
-                  <%= link_to loan_path(user), method: :delete, class: 'btn btn-danger btn-circle btn-sm' do %>
+                  <%= link_to loan_path(loan), method: :delete, class: 'btn btn-danger btn-circle btn-sm' do %>
                     <i class="fas fa-trash-alt"></i>
                   <% end %>
               <% end %>
               </td>
             </tr>
-            <% end %>
+            <%
+=begin%>
+ <% end %> 
+<%
+=end%>
           </tbody>
         </table>
       </div>
     </div>
   </div>
 </div>
-
-<script>
-  $("#dataTable_user").dataTable();
-</script>

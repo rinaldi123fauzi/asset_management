@@ -13,10 +13,14 @@ class LoansController < ApplicationController
   # GET /loans/new
   def new
     @loan = Loan.new
+    @softwares = Software.all()
+    @tools = Tool.all()
   end
 
   # GET /loans/1/edit
   def edit
+    @softwares = Software.all()
+    @tools = Tool.all()
   end
 
   # POST /loans or /loans.json
