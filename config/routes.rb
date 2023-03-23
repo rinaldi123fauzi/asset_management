@@ -54,8 +54,12 @@ Rails.application.routes.draw do
     post :simpanKaryawan, on: :collection
     post :updateKaryawan, on: :collection
     get :getDetailKaryawan, on: :collection
+    get :getAllTool, on: :collection
     post :hapusKaryawan, on: :collection
     post :hapusAlat, on: :collection
+    post :simpanStock, on: :collection
+    post :updateStock, on: :collection
+    get :getDetailStock,on: :collection
     member do
       get "/sub_work_category", to: "helper_json#getSubWorkCategory"
     end

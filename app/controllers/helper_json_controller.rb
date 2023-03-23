@@ -99,6 +99,13 @@ class HelperJsonController < ApplicationController
         ]
     end
 
+    def getAllTool
+        @data = Tool.all()
+        render json:[
+            "tools" => @data
+        ]
+    end
+
     def simpanAlat
         Tool.create!(
             'nama' => params[:namaAlat],
@@ -109,6 +116,42 @@ class HelperJsonController < ApplicationController
         )
         render json: [  
             "status" => "tersimpan"
+        ]
+    end
+
+    def simpanStock
+        Stock.create!(
+            'tool_id' => params[:namaAlat],
+            'status' => params[:status],
+            'jumlah' => params[:jumlah]
+        )
+        render json: [  
+            "status" => "tersimpan"
+        ]
+    end
+
+    def updateStock
+        @data = Stock.update(params[:id_stock],
+            {
+                :tool_id => params[:namaAlat],
+                :jumlah => params[:jumlah],
+                :status => params[:status]
+            }
+        )
+
+        if (@data)
+            render json: [  
+                "status" => "tersimpan"
+            ]
+        end
+    end
+
+    def getDetailStock
+        @data = Stock.find(params[:id])
+        @tools = Tool.all()
+        render json: [
+            "stock" => @data,
+            "tools" => @tools
         ]
     end
 

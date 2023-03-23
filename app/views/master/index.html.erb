@@ -8,7 +8,7 @@
       <div class="row" style="margin-bottom: 0px;">
         <div class="col-sm-4">
           <%= form_tag master_index_path, method: "GET" %>
-          <%= select_tag :pilihan, options_for_select(["Data Satuan Kerja","Data Karyawan","Data Software","Data Alat","Vendor","Data Role","Data User"], params[:pilihan]), prompt: "-- Pilih Data --", class: "form-control" %>
+          <%= select_tag :pilihan, options_for_select(["Data Stock","Data Satuan Kerja","Data Karyawan","Data Software","Data Alat","Vendor","Data Role","Data User"], params[:pilihan]), prompt: "-- Pilih Data --", class: "form-control" %>
         </div>
         <button type="submit" class="btn btn-info">Pilih</button>
       </div>
@@ -374,6 +374,92 @@
       </div>
     <% end %>
 
+    <% if params[:pilihan] == "Data Stock" %>
+      <div class="modal fade" id="stock" tabindex="-1" role="dialog" aria-labelledby="formModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="formModal"></h5>
+              <button type="button" class="close" id="close-modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <input type="hidden" id="id_stock">
+                <input type="hidden" id="id_satker">
+                <div class="form-group">
+                  <label>Nama Alat</label>
+                  <div class="input-group">
+                    <select name="" id="nama_alat" class="form-control"></select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Jumlah</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="jumlah">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Status</label>
+                  <div class="input-group">
+                    <select name="" id="status" class="form-control"></select>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary m-t-15 waves-effect" id="simpanStock">Simpan</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-header mt-2">
+        <h4>Data Stock</h4>
+        <div class="card-header-form">
+              <%# if current_user.can? { |permissions| permissions.category.create? } %>
+            <div class="align-items-center">
+              <%# <%= link_to "+ Data Kategori", new_employee_path, class: "btn btn-primary btn-sm" %>
+              <button type="button" class="btn btn-primary btn-sm tambah-stock" data-backdrop="true" data-toggle="modal" data-target="#stock">+Tambah</button>
+            </div>
+          <%# end %>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable_kategori" width="100%" cellspacing="0" id="table-1">
+            <thead>
+              <tr>
+                <th style="width: 50px;" class="text-center">No</th>
+                <th>Alat</th>
+                <th style="width: 150px;" class="text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @stocks.each_with_index do |stock, index| %>
+              <tr>
+                <td style="width: 50px;" class="text-center"><%= index+1 %></td>
+                <td><%= stock.tool.nama %></td>
+                <td style="width: 150px;" class="text-center">
+                  <%# if current_user.can? { |permissions| permissions.category.update? } %>
+                  <a href="#" class="btn btn-warning btn-circle btn-sm" id="ubahStock" data-toggle="modal" data-target="#stock" data-id="<%= stock.id %>">
+                      <i class="fas fa-pencil-alt"></i>
+                  </a>
+                  <%# end %>
+                  <%# if current_user.can? { |permissions| permissions.category.destroy? } %>
+                  <a href="<%= stock_path(stock) %>" class="btn btn-danger btn-circle btn-sm" data-method="DELETE" data-confirm="Are you sure?">
+                      <i class="fas fa-trash-alt"></i>
+                  </a>
+                  <%# end %>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% end %>
+
     <% if params[:pilihan] == "Data Software" %>
         <div class="modal fade" id="software" tabindex="-1" role="dialog" aria-labelledby="formModal"
           aria-hidden="true">
@@ -676,3 +762,4 @@
 <%= render "js_software" %>
 <%= render "js_satker" %>
 <%= render "js_karyawan" %>
+<%= render "js_stock" %>

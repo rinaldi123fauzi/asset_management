@@ -1,0 +1,119 @@
+<script>
+    $(document).on('click', '.tambah-stock', function(){
+      const id = 1;
+      $('#nama_alat').val('');
+      $('#jumlah').val('');
+      $('#status').val('');
+      $('.modal-title').text('Tambah Data');
+      $.ajax({
+        url: "<%= getAllTool_helper_json_index_path %>",
+        method: 'GET',
+        data : {
+                id:id
+                },
+        success: function(data)
+        {
+          viewHtml = '';
+          for (let i = 0; i < data[0]['tools'].length; i++) {
+            const element = data[0]['tools'][i];
+            viewHtml += '<option value='+element['id']+'>'+element['nama']+'</option>';
+          }
+          $('#nama_alat').html(viewHtml);
+
+          viewHtmlStatus = '';
+          viewHtmlStatus += '<option value="1">Ada</option>';
+          viewHtmlStatus += '<option value="0">Tidak Ada</option>';
+          $('#status').html(viewHtmlStatus);
+        }
+      });
+    });
+
+    $(document).on('click','#ubahStock', function(e){
+      e.preventDefault();
+      var namaAlat =  $('#nama_alat').val('');
+      var jumlah = $('#jumlah').val('');
+      var status = $('#status').val('');
+      var id = $(this).data('id');
+      $('#id_stock').val(id);
+      $('.modal-title').text('Ubah Data');
+      $.ajax({
+        url: "<%= getDetailStock_helper_json_index_path %>",
+        method: 'GET',
+        data : {
+                id:id
+                },
+        success: function(data)
+        {
+          $('#jumlah').val(data[0]['stock']['jumlah']);
+          viewHtmlAlat = '';
+          for (let i = 0; i < data[0]['tools'].length; i++) {
+            const element = data[0]['tools'][i];
+            if (data[0]['stock']['tool_id'] == element['id']) {
+              viewHtmlAlat += '<option value="'+element['id']+'" selected>'+element['nama']+'</option>';
+            }else{
+              viewHtmlAlat += '<option value="'+element['id']+'">'+element['nama']+'</option>';
+            }
+          }
+          $('#nama_alat').append(viewHtmlAlat);
+
+          viewHtmlStatus = '';
+          if (data[0]['stock']['status'] == 1) {
+            viewHtmlStatus = '<option value="1" selected>Ada</option>';
+            viewHtmlStatus = '<option value="0">Tidak Ada</option>';
+          }else{
+            viewHtmlStatus = '<option value="1">Ada</option>';
+            viewHtmlStatus = '<option value="0" selected>Tidak Ada</option>';
+          }
+          $('#status').append(viewHtmlStatus);
+        }
+      });
+    });
+
+    $(document).on('click','#simpanStock', function(e){
+      e.preventDefault();
+      var namaAlat =  $('#nama_alat').val();
+      var jumlah = $('#jumlah').val();
+      var status = $('#status').val();
+      var id_stock = $('#id_stock').val();
+      $('#simpanStock').text('Loading...');
+
+      if (id_stock == "") {
+        $.ajax({
+            url: "<%= simpanStock_helper_json_index_path %>",
+            method: 'POST',
+            data : {
+                    authenticity_token: '<%= form_authenticity_token %>',
+                    namaAlat:namaAlat,
+                    jumlah:jumlah,
+                    status:status,
+                    },
+            success: function(data)
+            {
+                if (data[0]['status'] == "tersimpan") {
+                window.location.href = "/master/index?pilihan=Data Stock";
+                }
+            }
+        });
+      }else{
+        $.ajax({
+            url: "<%= updateStock_helper_json_index_path %>",
+            method: 'POST',
+            data : {
+                    authenticity_token: '<%= form_authenticity_token %>',
+                    namaAlat:namaAlat,
+                    jumlah:jumlah,
+                    status:status,
+                    id_stock:id_stock
+                    },
+            success: function(data)
+            {
+                if (data[0]['status'] == "tersimpan") {
+                  setInterval(function() {
+                    window.location.href = "/master/index?pilihan=Data Stock";
+                  }, 2000);
+                }
+            }
+        });
+      }
+    });
+</script>
