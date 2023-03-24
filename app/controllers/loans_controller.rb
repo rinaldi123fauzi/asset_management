@@ -28,6 +28,7 @@ class LoansController < ApplicationController
     @loan = Loan.new(loan_params)
 
     respond_to do |format|
+      @loan.status = 0
       if @loan.save
         format.html { redirect_to loan_url(@loan), notice: "Loan was successfully created." }
         format.json { render :show, status: :created, location: @loan }

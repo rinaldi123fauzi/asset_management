@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_21_165805) do
+ActiveRecord::Schema.define(version: 2023_03_23_225654) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 2023_03_21_165805) do
   create_table "stocks", force: :cascade do |t|
     t.bigint "software_id"
     t.bigint "tool_id"
-    t.string "jumlah"
+    t.integer "jumlah"
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

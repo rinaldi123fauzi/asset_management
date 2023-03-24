@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header" style="background-color: none">
-     <h4>Tambah Peminjaman</h4>
+     <h4><%= @loan.id ? "Edit" : "Tambah"%> Peminjaman</h4>
     </div>
     <div class="card-body mt-0">
       <div class="row" style="margin-bottom: 0px;">
@@ -30,7 +30,15 @@
                   <select name="loan[software_id]" id="software_id" class="form-control">
                     <option value="" selected>--Pilih--</option>
                     <% @softwares.each do |software| %>
-                      <option value="<%= software.id %>"><%= software.nama %></option>
+                      <% if @loan.id.nil? %>
+                        <option value="<%= software.id %>"><%= software.nama %></option>
+                      <% else %>
+                        <% if @loan.software_id == software.id %>
+                          <option value="<%= software.id %>" selected><%= software.nama %></option>
+                        <% else %>
+                          <option value="<%= software.id %>"><%= software.nama %></option>
+                        <% end %>
+                      <% end %>
                     <% end %>
                   </select>
                 </div>
@@ -55,32 +63,33 @@
                 </div>
                 <div class="form-group">
                   <%= form.label :jumlah %>
-                  <input type="number" class="form-control" name="loan[jumlah]">
+                  <input type="number" class="form-control" id="jumlah" name="loan[jumlah]" value="<%= @loan.id ? @loan.jumlah : "" %>">
+                  <i class="notification_stock text-danger"></i>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <%= form.label :from_date %>
-                    <input type="date" class="form-control" name="loan[from_date]">
+                    <input type="date" class="form-control" name="loan[from_date]" value="<%= @loan.id ? @loan.from_date : "" %>">
                 </div>
                 <div class="form-group">
                   <%= form.label :deskripsi %>
-                  <textarea class="form-control" name="loan[deskripsi]"></textarea>
+                  <textarea class="form-control" name="loan[deskripsi]"><%= @loan.id ? @loan.deskripsi : "" %></textarea>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <%= form.label :to_date %>
-                  <input type="date" class="form-control" name="loan[to_date]">
+                  <input type="date" class="form-control" name="loan[to_date]" value="<%= @loan.id ? @loan.to_date : "" %>">
                 </div>
                 <div class="form-group">
                   <%= form.label :penanggung_jawab %>
-                  <input type="text" class="form-control" name="loan[penanggung_jawab]">
+                  <input type="text" class="form-control" name="loan[penanggung_jawab]" value="<%= @loan.id ? @loan.penanggung_jawab : "" %>">
                 </div>
               </div>
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" id="submit" class="btn btn-primary">Submit</button>
             </div>
           <% end %>
         </div>
@@ -90,7 +99,31 @@
 </div>
 
 <script>
+  $('#software_id').select2();
+  $('#tool_id').select2();
 
+  $(document).on('keyup', '#jumlah', function(){
+    var jumlah = $(this).val();
+    var tool = $('#tool_id').val();
+    $.ajax({
+        url: "<%= checkStockAlat_helper_json_index_path %>",
+        method: 'GET',
+        data : {
+                id:tool,
+                jumlah:jumlah
+                },
+        success: function(data)
+        {
+          if (data[0]['status'] == "melebihi") {
+            $('.notification_stock').text('Melebihi Batas');
+            $('#submit').prop('disabled', true);
+          }else{
+            $('.notification_stock').text('');
+            $('#submit').prop('disabled', false);
+          }
+        }
+    });
+  });
 </script>
 
 

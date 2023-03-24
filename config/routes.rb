@@ -60,6 +60,11 @@ Rails.application.routes.draw do
     post :simpanStock, on: :collection
     post :updateStock, on: :collection
     get :getDetailStock,on: :collection
+    get :checkStockAlat, on: :collection
+    get :approve, on: :collection
+    get :reject, on: :collection
+    get :done, on: :collection
+    get :getDetailPeminjaman, on: :collection
     member do
       get "/sub_work_category", to: "helper_json#getSubWorkCategory"
     end

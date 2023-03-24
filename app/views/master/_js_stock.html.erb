@@ -58,11 +58,11 @@
 
           viewHtmlStatus = '';
           if (data[0]['stock']['status'] == 1) {
-            viewHtmlStatus = '<option value="1" selected>Ada</option>';
-            viewHtmlStatus = '<option value="0">Tidak Ada</option>';
+            viewHtmlStatus += '<option value="1" selected>Ada</option>';
+            viewHtmlStatus += '<option value="0">Tidak Ada</option>';
           }else{
-            viewHtmlStatus = '<option value="1">Ada</option>';
-            viewHtmlStatus = '<option value="0" selected>Tidak Ada</option>';
+            viewHtmlStatus += '<option value="1">Ada</option>';
+            viewHtmlStatus += '<option value="0" selected>Tidak Ada</option>';
           }
           $('#status').append(viewHtmlStatus);
         }

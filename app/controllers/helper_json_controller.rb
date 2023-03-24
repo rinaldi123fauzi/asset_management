@@ -324,6 +324,67 @@ class HelperJsonController < ApplicationController
         end
     end
 
+    def checkStockAlat
+        @data = Stock.find_by_tool_id(params[:id])
+        if (params[:jumlah].to_i > @data.jumlah)
+            render json: [  
+                "status" => "melebihi",
+            ]
+        else
+            render json: [  
+                "status" => "aman",
+            ]
+        end
+    end
+
+    def approve
+        @data = Loan.update(params[:id], {:status => params[:status]})
+        @checkParent = Loan.find(params[:id])
+        @checkStock = Stock.find_by_tool_id(@checkParent.tool_id)
+        @amount = @checkStock.jumlah - @checkParent.jumlah 
+        @checkStock.update(jumlah: @amount)
+        if @data
+            render json: [  
+                "status" => "terupdate",
+            ]
+        end
+    end
+
+    def reject
+        @data = Loan.update(params[:id], {:status => params[:status]})
+        if @data
+            render json: [  
+                "status" => "terupdate",
+            ]
+        end
+    end
+
+    def done
+        @data = Loan.update(params[:id], {:status => params[:status]})
+        @checkParent = Loan.find(params[:id])
+        @checkStock = Stock.find_by_tool_id(@checkParent.tool_id)
+        @amount = @checkStock.jumlah + @checkParent.jumlah 
+        if @data
+            render json: [  
+                "status" => "terupdate",
+            ]
+        end
+    end
+
+    def getDetailPeminjaman
+        @data = Loan.find(params[:id])
+        render json:[
+            "nama_peminjam" => @data.user.username,
+            "alat" => @data.tool.try(:nama),
+            "software" => @data.software.try(:nama),
+            "deskripsi" => @data.deskripsi,
+            "jumlah" => @data.jumlah,
+            "from_date" => @data.from_date,
+            "to_date" => @data.to_date,
+            "penanggung_jawab" => @data.penanggung_jawab,
+            "status" => @data.status
+        ]
+    end
     # def searchDataDashboard
     #     area = params[:area]
     #     tahun = params[:tahun]
