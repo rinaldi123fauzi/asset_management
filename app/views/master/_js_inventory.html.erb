@@ -5,6 +5,8 @@
       $('#item').empty();
       $('#merek').val('');
       $('#tahun_perolehan').val('');
+      $('#harga_perolehan_real').val('');
+      $('#nilai_residu_real').val('');
       $('#harga_perolehan').val('');
       $('#nilai_residu').val('');
       $('#masa_guna').val('');
@@ -47,6 +49,8 @@
       $('#item').empty();
       $('#merek').val('');
       $('#tahun_perolehan').val('');
+      $('#harga_perolehan_real').val('');
+      $('#nilai_residu_real').val('');
       $('#harga_perolehan').val('');
       $('#nilai_residu').val('');
       $('#masa_guna').val('');
@@ -77,8 +81,10 @@
           $('#item').append(viewHtmlItem);
           $('#merek').val(data[0]['merek']);
           $('#tahun_perolehan').val(data[0]['tahun_perolehan']);
-          $('#harga_perolehan').val(data[0]['harga_perolehan']);
-          $('#nilai_residu').val(data[0]['nilai_residu']);
+          $('#harga_perolehan_real').val(data[0]['harga_perolehan']);
+          $('#harga_perolehan').val(rupiah_formater(data[0]['harga_perolehan'].toString(), 'Rp.'));
+          $('#nilai_residu').val(rupiah_formater(data[0]['nilai_residu'].toString(), 'Rp.'));
+          $('#nilai_residu_real').val(data[0]['nilai_residu']);
           $('#masa_guna').val(data[0]['masa_guna']);
           $('#lama_pakai').val(data[0]['lama_pakai']);
           
@@ -108,6 +114,43 @@
           }
           $('#lokasi').append(viewHtmlLokasi);
           // $('#lokasi').val(data[0]['lokasi']);
+        }
+      });
+    });
+
+    $(document).on('click', '#lihatInventory', function(){
+      $('#viewkode').val('');
+      $('#viewitem').val('');
+      $('#viewmerek').val('');
+      $('#viewtahun_perolehan').val('');
+      $('#viewharga_perolehan').val('');
+      $('#viewnilai_residu').val('');
+      $('#viewmasa_guna').val('');
+      $('#viewlama_pakai').val('');
+      $('#viewkondisi').val('');
+      $('#viewlokasi').val('');
+      var id = $(this).data('id');
+      $('.modal-title').text('Detail');
+      $.ajax({
+        url: "<%= getDetailInventory_helper_json_index_path %>",
+        method: 'GET',
+        data : {
+                id:id
+                },
+        success: function(data)
+        {
+          var harga_perolehan = rupiah_formater(data[0]['harga_perolehan'].toString(), 'Rp.');
+          var nilai_residu = rupiah_formater(data[0]['nilai_residu'].toString(), 'Rp.');
+          $('#viewkode').val(data[0]['kode']);
+          $('#viewitem').val(data[0]['nama_item']);
+          $('#viewmerek').val(data[0]['merek']);
+          $('#viewtahun_perolehan').val(data[0]['tahun_perolehan']);
+          $('#viewharga_perolehan').val(harga_perolehan);
+          $('#viewnilai_residu').val(nilai_residu);
+          $('#viewmasa_guna').val(data[0]['masa_guna']);
+          $('#viewlama_pakai').val(data[0]['lama_pakai']);
+          $('#viewkondisi').val(data[0]['kondisi']);
+          $('#viewlokasi').val(data[0]['lokasi']);
         }
       });
     });
@@ -153,5 +196,20 @@
                 }
             }
         });
+    });
+
+    $("#harga_perolehan").keyup(function () {
+      $('#harga_perolehan_real').val(this.value.replace(/[^\/\d]/g, ''));
+      data = rupiah_formater(this.value, 'Rp.');
+      console.log($('#harga_perolehan_real').val());
+      this.value = data;
+      console.log(this.value)
+    });
+    $("#nilai_residu").keyup(function () {
+      $('#nilai_residu_real').val(this.value.replace(/[^\/\d]/g, ''));
+      data = rupiah_formater(this.value, 'Rp.');
+      console.log($('#nilai_residu_real').val());
+      this.value = data;
+      console.log(this.value)
     });
 </script>

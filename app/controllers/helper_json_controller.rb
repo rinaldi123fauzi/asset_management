@@ -114,6 +114,7 @@ class HelperJsonController < ApplicationController
         render json: [
             :kode => @data.kode,
             :item => @data.item_id,
+            :nama_item => @data.item.nama_item,
             :merek => @data.merek,
             :tahun_perolehan => @data.tahun_perolehan,
             :harga_perolehan => @data.harga_perolehan,

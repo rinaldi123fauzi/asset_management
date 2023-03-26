@@ -420,13 +420,15 @@
                 <div class="form-group">
                   <label>Harga Perolehan</label>
                   <div class="input-group">
-                    <input type="number" class="form-control" name="harga_perolehan" id="harga_perolehan">
+                    <input type="text" class="form-control" id="harga_perolehan">
+                    <input type="hidden" class="form-control" name="harga_perolehan" id="harga_perolehan_real">
                   </div>
                 </div>
                 <div class="form-group">
                   <label>Nilai Residu</label>
                   <div class="input-group">
-                    <input type="number" class="form-control" name="nilai_residu" id="nilai_residu">
+                    <input type="text" class="form-control" id="nilai_residu">
+                    <input type="hidden" class="form-control" name="nilai_residu" id="nilai_residu_real">
                   </div>
                 </div>
                 <div class="form-group">
@@ -461,6 +463,97 @@
                 </div>
                 <button type="submit" class="btn btn-primary m-t-15 waves-effect" id="simpanInventory">Simpan</button>
               </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="viewInventory" tabindex="-1" role="dialog" aria-labelledby="formModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="formModal"></h5>
+              <button type="button" class="close" id="close-modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Kode</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="viewkode" disabled>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Merek</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="viewmerek" disabled>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Item</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="viewitem" disabled>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Tahun Perolehan</label>
+                      <div class="input-group">
+                        <input type="date" class="form-control" id="viewtahun_perolehan" disabled>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Harga Perolehan</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="viewharga_perolehan" disabled>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Masa Guna</label>
+                      <div class="input-group">
+                        <input type="date" class="form-control" id="viewmasa_guna" disabled>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Nilai Residu</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="viewnilai_residu" disabled>
+                      </div>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label>Lama Pakai</label>
+                      <div class="input-group">
+                        <input type="date" class="form-control" id="viewlama_pakai" disabled>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Kondisi</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="viewkondisi" disabled>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Lokasi</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="viewlokasi" disabled>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
           </div>
         </div>
@@ -513,6 +606,9 @@
                     <% end %>
                   </td>
                   <td style="width: 150px;" class="text-center">
+                    <a href="#" class="btn btn-primary btn-circle btn-sm" id="lihatInventory" data-toggle="modal" data-target="#viewInventory" data-id="<%= inventory.id %>">
+                        <i class="fas fa-info-circle"></i>
+                    </a>
                     <%# if current_user.can? { |permissions| permissions.category.update? } %>
                     <a href="#" class="btn btn-warning btn-circle btn-sm" id="ubahInventory" data-toggle="modal" data-target="#inventory" data-id="<%= inventory.id %>">
                         <i class="fas fa-pencil-alt"></i>
