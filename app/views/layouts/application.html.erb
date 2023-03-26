@@ -8,7 +8,7 @@
   <title>Asset Management</title>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  <link rel='shortcut icon' type='image/x-icon' href='/assets/img/favicon.ico' />
+    <%= favicon_link_tag 'sena.png', rel: 'icon' %>
 </head>
 
   <% if user_signed_in? %>
