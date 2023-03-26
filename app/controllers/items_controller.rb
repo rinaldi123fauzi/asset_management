@@ -52,7 +52,7 @@ class ItemsController < ApplicationController
     @item.destroy
 
     respond_to do |format|
-      format.html { redirect_to items_url, notice: "Item was successfully destroyed." }
+      format.html { redirect_to "/master/index?pilihan=Data Item", notice: "Item was successfully destroyed." }
       format.json { head :no_content }
     end
   end

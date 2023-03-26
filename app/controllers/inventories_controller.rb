@@ -49,10 +49,13 @@ class InventoriesController < ApplicationController
 
   # DELETE /inventories/1 or /inventories/1.json
   def destroy
+    @attachment = ActiveStorage::Attachment.find_by_record_id(@inventory.id)
+    unless @attachment.nil?
+      @attachment.purge
+    end
     @inventory.destroy
-
     respond_to do |format|
-      format.html { redirect_to inventories_url, notice: "Inventory was successfully destroyed." }
+      format.html { redirect_to "/master/index?pilihan=Data Inventory", notice: "Inventory was successfully destroyed." }
       format.json { head :no_content }
     end
   end

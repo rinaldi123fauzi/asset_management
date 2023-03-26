@@ -51,8 +51,8 @@
       $('#nilai_residu').val('');
       $('#masa_guna').val('');
       $('#lama_pakai').val('');
-      $('#kondisi').val('');
-      $('#lokasi').val('');
+      $('#kondisi').empty();
+      $('#lokasi').empty();
       var id = $(this).data('id');
       $('#id_inventory').val(id);
       $('.modal-title').text('Ubah Data');
@@ -135,5 +135,23 @@
           window.location.href = "/master/index?pilihan=Data Inventory";
         }
       });
+    });
+
+    $(document).on('click','#hapusFile',function(e){
+        e.preventDefault();
+        var id = $(this).data('id');
+        $.ajax({
+            url: "<%= deleteFile_helper_json_index_path %>",
+            method: 'GET',
+            data : {
+                      id:id
+                    },
+            success: function(data)
+            {
+                if (data[0]['status'] == "terhapus") {
+                    window.location.href = "/master/index?pilihan=Data Inventory";
+                }
+            }
+        });
     });
 </script>

@@ -342,6 +342,17 @@ class HelperJsonController < ApplicationController
             "status" => @data.status
         ]
     end
+
+    def deleteFile
+        @attachment = ActiveStorage::Attachment.find(params[:id])
+        @attachment.purge # or use purge_later
+        if @attachment
+            render json: [  
+                "status" => "terhapus",
+            ]
+        end
+    end
+
     def searchDataDashboard
         tahun = params[:tahun]
         if tahun.present?

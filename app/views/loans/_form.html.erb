@@ -63,7 +63,7 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <%= form.label :penanggung_jawab %>
+                  <%= form.label "Atasan Terkait" %>
                   <input type="text" class="form-control" name="loan[penanggung_jawab]" value="<%= @loan.id ? @loan.penanggung_jawab : "" %>" required>
                 </div>
               </div>
@@ -92,7 +92,7 @@
         success: function(data)
         {
           if (data[0]['status'] == "sudah dipinjam") {
-            $('.notification_stock').text('Barang Sudah Dipinjam');
+            $('.notification_stock').text('Barang Sedang Dipinjam');
             $('#submit').prop('disabled', true);
           }else if(data[0]['status'] == "tersedia"){
             $('.notification_stock').text('');

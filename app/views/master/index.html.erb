@@ -377,7 +377,7 @@
     <% if params[:pilihan] == "Data Inventory" %>
       <div class="modal fade" id="inventory" tabindex="-1" role="dialog" aria-labelledby="formModal"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="formModal"></h5>
@@ -485,6 +485,7 @@
                 <th>Kondisi</th>
                 <th>Lokasi</th>
                 <th>Pengguna</th>
+                <th>File</th>
                 <th style="width: 150px;" class="text-center">Aksi</th>
               </tr>
             </thead>
@@ -498,6 +499,15 @@
                   <td><%= inventory.kondisi %></td>
                   <td><%= inventory.lokasi %></td>
                   <td><%= inventory.user.try(:username) %></td>
+                  <td>
+                    <% inventory.foto_inventory.order(:created_at => :desc).each do |lampiran| %>
+                      <span style="margin-right: 10px">
+                          <%= link_to "View File", rails_blob_path(lampiran, disposition: 'preview'), class: "badge badge-primary badge-xs", :target => "_blank" %>
+                          <a href="#" id="hapusFile" class="badge badge-danger badge-xs" data-id="<%= lampiran.id %>" data-confirm="Are you sure?"> Delete File </a>
+                          <br>
+                      </span>
+                    <% end %>
+                  </td>
                   <td style="width: 150px;" class="text-center">
                     <%# if current_user.can? { |permissions| permissions.category.update? } %>
                     <a href="#" class="btn btn-warning btn-circle btn-sm" id="ubahInventory" data-toggle="modal" data-target="#inventory" data-id="<%= inventory.id %>">
