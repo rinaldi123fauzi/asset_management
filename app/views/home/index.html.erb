@@ -3,28 +3,6 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <label>Software</label>
-                    <select class="form-control select2" id="software">
-                        <option selected disabled>--Pilih Software--</option>
-                        <% @softwares.each do |f| %>
-                            <option value="<%= f.id %>"><%= f.nama %></option>
-                        <% end %>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label>Alat</label>
-                    <select class="form-control select2" id="alat">
-                        <option selected disabled>--Pilih Alat--</option>
-                        <% @tools.each do |f| %>
-                            <option value="<%= f.id %>"><%= f.nama %></option>
-                        <% end %>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
                     <label>Tahun</label>
                     <select class="form-control select2" id="tahun">
                         <option selected disabled>--Pilih Tahun--</option>
@@ -40,308 +18,161 @@
             </div>
         </div>
     </form>
-    <div class="row ">
+    <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-6">
             <div class="card">
-            <div class="card-header">
-                <h4>Software</h4>
-            </div>
-            <div class="card-body">
-                <div class="recent-report__chart">
-                <div id="chart1"></div>
+                <div class="card-header">
+                    <h4>Presentase Kondisi Aset</h4>
                 </div>
-            </div>
+                <div class="card-body" style="height: 400px;">
+                    <div class="recent-report__chart">
+                        <div id="chart1"></div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-6">
+         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-6">
             <div class="card">
-            <div class="card-header">
-                <h4>Alat / Tools</h4>
-            </div>
-            <div class="card-body">
-                <div class="recent-report__chart">
-                <div id="chart2"></div>
+                <div class="card-header">
+                    <h4>Presentase Peminjaman Aset</h4>
                 </div>
-            </div>
+                <div class="card-body" style="height: 400px;">
+                    <div class="recent-report__chart">
+                        <div id="chart2"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
-    <%= javascript_include_tag 'charts' %>
-    <script>
+<%= javascript_include_tag 'charts' %>
+<script>
     'use strict';
-$(document).ready(function () {
-    $.ajax({
-        url: "",
-        method: 'POST',
-        data : {
-                authenticity_token: '<%= form_authenticity_token %>',
-                },
-        success: function(data)
-        {
-            console.log(data);
-            // let arrayTotal = [];
-            // for (let i = 0; i < data[0]['data_dashboard'].length; i++) {
-            //     const element = data[0]['data_dashboard'][i];
-            //     arrayTotal.push(element['total_harga']);
-            // }
-            $('#chart1').empty();
-            $('#chart2').empty();
-            $('#chart3').empty();
-            chart1(data[0]['data_dashboard']);
-            chart2(data[0]['data_dashboard']);
-            chart3(data[0]['data_dashboard']);
-        }
+    $(document).ready(function () {
+        $.ajax({
+            url: "<%= searchDataDashboard_helper_json_index_path %>",
+            method: 'POST',
+            data : {
+                    authenticity_token: '<%= form_authenticity_token %>',
+                    },
+            success: function(data)
+            {
+                console.log(data[0]['data']);
+                // let arrayTotal = [];
+                // for (let i = 0; i < data[0]['data_dashboard'].length; i++) {
+                //     const element = data[0]['data_dashboard'][i];
+                //     arrayTotal.push(element['total_harga']);
+                // }
+                $('#chart1').empty();
+                $('#chart2').empty();
+                chart1(data[0]['data']);
+                chart2(data[0]['data_pinjam']);
+            }
+        });
+
     });
 
-});
-
-$('#searchData').submit(function(e) {
-    e.preventDefault();
-    const software = $('#software option:selected').val();
-    const tahun = $('#tahun option:selected').val();
-    const material = $('#material option:selected').val();
-    $.ajax({
-        url: "",
-        method: 'POST',
-        data : {
-                authenticity_token: '<%= form_authenticity_token %>',
-                software:software,
-                tahun:tahun,
-                material:material
-                },
-        success: function(data)
-        {
-            console.log(data);
-            // let arrayTotal = [];
-            // for (let i = 0; i < data[0]['data_dashboard'].length; i++) {
-            //     const element = data[0]['data_dashboard'][i];
-            //     arrayTotal.push(element['total_harga']);
-            // }
-            $('#chart1').empty();
-            $('#chart2').empty();
-            $('#chart3').empty();
-            chart1(data[0]['data_dashboard']);
-            chart2(data[0]['data_dashboard']);
-            chart3(data[0]['data_dashboard']);
-        }
+    $('#searchData').submit(function(e) {
+        e.preventDefault();
+        const tahun = $('#tahun option:selected').val();
+        $.ajax({
+            url: "<%= searchDataDashboard_helper_json_index_path %>",
+            method: 'POST',
+            data : {
+                        authenticity_token: '<%= form_authenticity_token %>',
+                        tahun:tahun
+                    },
+            success: function(data)
+            {
+                console.log(data);
+                // let arrayTotal = [];
+                // for (let i = 0; i < data[0]['data_dashboard'].length; i++) {
+                //     const element = data[0]['data_dashboard'][i];
+                //     arrayTotal.push(element['total_harga']);
+                // }
+                $('#chart1').empty();
+                $('#chart2').empty();
+                chart1(data[0]['data']);
+                chart2(data[0]['data_pinjam']);
+            }
+        });
     });
-});
 
-function chart1(data) {
-    $('#chart1').show();
-    let arrayTotal = [];
-    for (let i = 0; i < data.length; i++) {
-        const element = data[i];
-        arrayTotal.push(element['total_harga']);
-    }
-    console.log(arrayTotal);
-    var options = {
-        chart: {
-            height: 350,
-            type: 'bar',
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '30%',
-            },
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            show: true,
-            width: 2,
-            colors: ['transparent']
-        },
-        series: [{
-            name: 'Cost Total',
-            data: arrayTotal
-        }],
-        xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'],
-            labels: {
-                style: {
-                    colors: '#9aa0ac',
-                }
-            }
-        },
-        yaxis: {
-            title: {
-                text: 'IDR (thousands)'
-            },
-            labels: {
-                style: {
-                    color: '#9aa0ac',
-                }
-            }
-        },
-        fill: {
-            opacity: 1
-
-        },
-        tooltip: {
-            y: {
-                formatter: function (val) {
-                    return "Rp. " + val + " thousands"
-                }
-            }
+    function chart1(data) {
+        $('#chart1').show();
+        let arrayBaik = [];
+        let arrayDiperbaiki = [];
+        let arrayDiganti = [];
+        for (let i = 0; i < data.length; i++) {
+            const element = data[i];
+            arrayBaik.push(element['data_baik']);
+            arrayDiperbaiki.push(element['data_diperbaiki']);
+            arrayDiganti.push(element['data_diganti']);
         }
-    }
-
-    var chart = new ApexCharts(
-        document.querySelector("#chart1"),
-        options
-    );
-
-    chart.render();
-
-
-}
-
-function chart2(data) {
-    $('#chart1').show();
-    let arrayTotal = [];
-    for (let i = 0; i < data.length; i++) {
-        const element = data[i];
-        arrayTotal.push(element['total_harga']);
-    }
-    var options = {
-        chart: {
-            height: 350,
-            type: 'bar',
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '30%',
+        console.log(arrayBaik[0]);
+        var options = {
+            chart: {
+                width: 450,
+                type: 'pie',
             },
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            show: true,
-            width: 2,
-            colors: ['transparent']
-        },
-        series: [{
-            name: 'Cost Total',
-            data: arrayTotal
-        }],
-        xaxis: {
-            categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-            labels: {
-                style: {
-                    colors: '#9aa0ac',
+            labels: ['Kondisi Baik', 'Kondisi Diperbaiki', 'Kondisi Diganti'],
+            series: [arrayBaik[0], arrayDiperbaiki[0], arrayDiganti[0]],
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
                 }
-            }
-        },
-        yaxis: {
-            title: {
-                text: 'IDR (thousands)'
-            },
-            labels: {
-                style: {
-                    color: '#9aa0ac',
-                }
-            }
-        },
-        fill: {
-            opacity: 1,
-            colors: ['#ffd766']
-
-        },
-        tooltip: {
-            y: {
-                formatter: function (val) {
-                    return "Rp. " + val + ""
-                }
-            }
+            }]
         }
+
+        var chart = new ApexCharts(
+            document.querySelector("#chart1"),
+            options
+        );
+
+        chart.render();
     }
 
-    var chart = new ApexCharts(
-        document.querySelector("#chart2"),
-        options
-    );
-
-    chart.render();
-
-
-}
-
-function chart3(data) {
-    $('#chart1').show();
-    let arrayTotal = [];
-    for (let i = 0; i < data.length; i++) {
-        const element = data[i];
-        arrayTotal.push(element['total_harga']);
-    }
-    var options = {
-        chart: {
-            height: 350,
-            type: 'bar',
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '30%',
-            },
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            show: true,
-            width: 2,
-            colors: ['transparent']
-        },
-        series: [{
-            name: 'Cost Total',
-            data: arrayTotal
-        }],
-        xaxis: {
-            categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-            labels: {
-                style: {
-                    colors: '#9aa0ac',
-                }
-            }
-        },
-        yaxis: {
-            title: {
-                text: 'IDR (thousands)'
-            },
-            labels: {
-                style: {
-                    color: '#9aa0ac',
-                }
-            }
-        },
-        fill: {
-            opacity: 1,
-            colors : ['#ff1a55']
-
-        },
-        tooltip: {
-            y: {
-                formatter: function (val) {
-                    return "Rp. " + val + ""
-                }
-            }
+    function chart2(data) {
+        $('#chart2').show();
+        let arrayPinjam = [];
+        let arrayKantor = [];
+        for (let i = 0; i < data.length; i++) {
+            const element = data[i];
+            arrayPinjam.push(element['data_dipinjam']);
+            arrayKantor.push(element['data_kantor']);
         }
+        var options = {
+            chart: {
+                width: 400,
+                type: 'pie',
+            },
+            labels: ['Dipinjam', 'Tersedia'],
+            series: [arrayPinjam[0], arrayKantor[0]],
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }]
+        }
+
+        var chart = new ApexCharts(
+            document.querySelector("#chart2"),
+            options
+        );
+
+        chart.render();
     }
-
-    var chart = new ApexCharts(
-        document.querySelector("#chart3"),
-        options
-    );
-
-    chart.render();
-
-
-}
-    </script>
+</script>
         

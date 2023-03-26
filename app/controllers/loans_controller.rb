@@ -23,7 +23,7 @@ class LoansController < ApplicationController
 
   # GET /loans/1/edit
   def edit
-    @inventory = Inventory.all()
+    @inventories = Inventory.all()
   end
 
   # POST /loans or /loans.json
