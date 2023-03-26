@@ -273,17 +273,41 @@ class HelperJsonController < ApplicationController
         end
     end
 
+    def hapusSatker
+        @data = WorkUnit.find(params[:id]).destroy
+        if (@data)
+            render json: [  
+                "status" => "terhapus",
+            ]
+        end
+    end
+
+    def checkInventory
+        begin
+            @data = Inventory.find(params[:id])
+            if @data.user_id && @data.lokasi == "dipinjam"
+                render json: [  
+                    "status" => "sudah dipinjam",
+                ]
+            else
+                render json: [  
+                    "status" => "tersedia",
+                ]
+            end
+        rescue
+            render json: [  
+                "status" => "tersedia",
+            ]
+        end
+    end
+
     def approve
         @data = Loan.update(params[:id], {:status => params[:status]})
         @checkParent = Loan.find(params[:id])
-        @checkStock = Stock.find_by_tool_id(@checkParent.tool_id)
-        @amount = @checkStock.jumlah - @checkParent.jumlah 
-        @checkStock.update(jumlah: @amount)
-        if @data
-            render json: [  
-                "status" => "terupdate",
-            ]
-        end
+        Inventory.update(@checkParent.inventory_id, {:user_id => @checkParent.user_id, :lokasi => "dipinjam"})
+        render json: [  
+            "status" => "terupdate",
+        ]
     end
 
     def reject
@@ -298,8 +322,7 @@ class HelperJsonController < ApplicationController
     def done
         @data = Loan.update(params[:id], {:status => params[:status]})
         @checkParent = Loan.find(params[:id])
-        @checkStock = Stock.find_by_tool_id(@checkParent.tool_id)
-        @amount = @checkStock.jumlah + @checkParent.jumlah 
+        Inventory.update(@checkParent.inventory_id, {:user_id => "", :lokasi => "kantor"})
         if @data
             render json: [  
                 "status" => "terupdate",
@@ -311,10 +334,8 @@ class HelperJsonController < ApplicationController
         @data = Loan.find(params[:id])
         render json:[
             "nama_peminjam" => @data.user.username,
-            "alat" => @data.tool.try(:nama),
-            "software" => @data.software.try(:nama),
             "deskripsi" => @data.deskripsi,
-            "jumlah" => @data.jumlah,
+            "inventory" => @data.inventory.merek,
             "from_date" => @data.from_date,
             "to_date" => @data.to_date,
             "penanggung_jawab" => @data.penanggung_jawab,

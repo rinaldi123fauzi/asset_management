@@ -18,14 +18,12 @@ class LoansController < ApplicationController
   # GET /loans/new
   def new
     @loan = Loan.new
-    @softwares = Software.all()
-    @tools = Tool.all()
+    @inventories = Inventory.all()
   end
 
   # GET /loans/1/edit
   def edit
-    @softwares = Software.all()
-    @tools = Tool.all()
+    @inventory = Inventory.all()
   end
 
   # POST /loans or /loans.json
@@ -75,6 +73,6 @@ class LoansController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def loan_params
-      params.require(:loan).permit(:user_id, :software_id, :tool_id, :deskripsi, :jumlah, :from_date, :to_date, :penanggung_jawab, :status)
+      params.require(:loan).permit(:user_id, :deskripsi, :from_date, :to_date, :penanggung_jawab, :status, :inventory_id)
     end
 end

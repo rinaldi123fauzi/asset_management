@@ -361,7 +361,7 @@
                   </a>
                   <%# end %>
                   <%# if current_user.can? { |permissions| permissions.category.destroy? } %>
-                  <a href="<%= work_unit_path(work_unit) %>" class="btn btn-danger btn-circle btn-sm" data-method="DELETE" data-confirm="Are you sure?">
+                  <a href="#" class="btn btn-danger btn-circle btn-sm" id="hapusSatker" data-id="<%= work_unit.id %>" data-confirm="Are you sure?">
                       <i class="fas fa-trash-alt"></i>
                   </a>
                   <%# end %>

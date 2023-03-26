@@ -112,12 +112,12 @@
       });
     });
 
-    const btn = document.querySelector('#simpanInventory');
-    const form = document.querySelector('form');
+    const btn_inventory = document.querySelector('#simpanInventory');
+    const form_inventory = document.querySelector('form');
 
-    btn.addEventListener('click', (e) => {
+    btn_inventory.addEventListener('click', (e) => {
       e.preventDefault();
-      const formData = new FormData(form);
+      const formData = new FormData(form_inventory);
       var id_inventory = $('#id_inventory').val();
       $('#simpanInventory').text('Loading...');
       let xhr = new XMLHttpRequest();  

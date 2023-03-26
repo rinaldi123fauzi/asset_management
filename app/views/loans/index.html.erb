@@ -32,17 +32,17 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <label>Software</label>
+                      <label>Penanggung Jawab</label>
                       <div class="input-group">
-                        <input type="text" class="form-control" id="software" disabled>
+                        <input type="text" class="form-control" id="penanggung_jawab" disabled>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label>Alat</label>
+                      <label>Inventory</label>
                       <div class="input-group">
-                        <input type="text" class="form-control" id="alat" disabled>
+                        <input type="text" class="form-control" id="inventory" disabled>
                       </div>
                     </div>
                     <div class="form-group">
@@ -52,25 +52,9 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <div class="form-group">
-                      <label>Jumlah</label>
-                      <div class="input-group">
-                        <input type="number" class="form-control" id="jumlah" disabled>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label>From Date</label>
-                      <div class="input-group">
-                        <input type="date" class="form-control" id="from_date" disabled>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label>Due Date</label>
+                      <label>To Date</label>
                       <div class="input-group">
                         <input type="date" class="form-control" id="to_date" disabled>
                       </div>
@@ -78,9 +62,9 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label>Penanggung Jawab</label>
+                      <label>From Date</label>
                       <div class="input-group">
-                        <input type="text" class="form-control" id="penanggung_jawab" disabled>
+                        <input type="date" class="form-control" id="from_date" disabled>
                       </div>
                     </div>
                   </div>
@@ -106,9 +90,7 @@
             <tr>
               <th class="text-center" style="width: 20px;">No</th>
               <th>User</th>
-              <th>Software</th>
-              <th>Tool</th>
-              <th>Jumlah</th>
+              <th>Inventory</th>
               <th>From date</th>
               <th>To date</th>
               <th>Status</th>
@@ -119,10 +101,8 @@
           <% @loans.each_with_index do |loan, index| %>
             <tr>
               <td class="text-center"><%= index+1 %></td>
-              <td><%= loan.user.username %></td>
-              <td><%= loan.software ? loan.software.nama : "-" %></td>
-              <td><%= loan.tool ? loan.tool.nama : "-" %></td>
-              <td><%= loan.jumlah %></td>
+              <td><%= loan.user.try(:username) %></td>
+              <td><%= loan.inventory.try(:merek) %></td>
               <td><span class="badge badge-default" style="color: black;"><%= loan.from_date %></span></td>
               <% if Date.current >= loan.to_date && loan.status == 2 %>
                 <td><span class="badge badge-danger" style="color: black;"><%= loan.to_date %></span></td>
@@ -218,7 +198,7 @@
   $(document).on('click','#dikembalikan', function(){
     var id = $(this).data('id');
      $.ajax({
-        url: "<%= reject_helper_json_index_path %>",
+        url: "<%= done_helper_json_index_path %>",
         method: 'GET',
         data : {
                 id:id,
@@ -234,10 +214,7 @@
   $(document).on('click','#detail', function(){
     var id = $(this).data('id');
     $('#nama_peminjam').val('');
-    $('#alat').val('');
-    $('#software').val('');
-    $('#deskripsi').val('');
-    $('#jumlah').val('');
+    $('#inventory').val('');
     $('#from_date').val('');
     $('#to_date').val('');
     $('#penanggung_jawab').val('');
@@ -251,10 +228,8 @@
         success: function(data)
         {
           $('#nama_peminjam').val(data[0]['nama_peminjam']);
-          $('#alat').val(data[0]['alat'] ?? "-");
-          $('#software').val(data[0]['software'] ?? "-");
           $('#deskripsi').val(data[0]['deskripsi']);
-          $('#jumlah').val(data[0]['jumlah']);
+          $('#inventory').val(data[0]['inventory']);
           $('#from_date').val(data[0]['from_date']);
           $('#to_date').val(data[0]['to_date']);
           $('#penanggung_jawab').val(data[0]['penanggung_jawab']);

@@ -18,6 +18,7 @@
               </div>
             <% end %>
             
+            
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
@@ -26,65 +27,44 @@
                  <input type="hidden" name="loan[user_id]" class="form-control" value="<%= current_user.id %>" readonly>
                 </div>
                 <div class="form-group">
-                  <%= form.label :software_id %>
-                  <select name="loan[software_id]" id="software_id" class="form-control">
-                    <option value="" selected>--Pilih--</option>
-                    <% @softwares.each do |software| %>
-                      <% if @loan.id.nil? %>
-                        <option value="<%= software.id %>"><%= software.nama %></option>
-                      <% else %>
-                        <% if @loan.software_id == software.id %>
-                          <option value="<%= software.id %>" selected><%= software.nama %></option>
-                        <% else %>
-                          <option value="<%= software.id %>"><%= software.nama %></option>
-                        <% end %>
-                      <% end %>
-                    <% end %>
-                  </select>
+                  <%= form.label :from_date %>
+                    <input type="date" class="form-control" name="loan[from_date]" value="<%= @loan.id ? @loan.from_date : "" %>" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <%= form.label :tool_id %>
-                  <select name="loan[tool_id]" id="tool_id" class="form-control">
-                    <option value="">--Pilih--</option>
-                    <% @tools.each do |tool| %>
+                  <%= form.label :inventory_id %>
+                  <select name="loan[inventory_id]" id="inventory_id" class="form-control" required>
+                    <option value="" selected>--Pilih--</option>
+                    <% @inventories.each do |inventory| %>
                       <% if @loan.id.nil? %>
-                        <option value="<%= tool.id %>"><%= tool.nama %></option>
+                        <option value="<%= inventory.id %>"><%= inventory.merek %></option>
                       <% else %>
-                        <% if @loan.tool_id == tool.id %>
-                          <option value="<%= tool.id %>" selected><%= tool.nama %></option>
+                        <% if @loan.inventory_id == inventory.id %>
+                          <option value="<%= inventory.id %>" selected><%= inventory.merek %></option>
                         <% else %>
-                          <option value="<%= tool.id %>"><%= tool.nama %></option>
+                          <option value="<%= inventory.id %>"><%= inventory.merek %></option>
                         <% end %>
                       <% end %>
                     <% end %>
                   </select>
-                </div>
-                <div class="form-group">
-                  <%= form.label :jumlah %>
-                  <input type="number" class="form-control" id="jumlah" name="loan[jumlah]" value="<%= @loan.id ? @loan.jumlah : "" %>">
                   <i class="notification_stock text-danger"></i>
                 </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <%= form.label :from_date %>
-                    <input type="date" class="form-control" name="loan[from_date]" value="<%= @loan.id ? @loan.from_date : "" %>">
-                </div>
-                <div class="form-group">
-                  <%= form.label :deskripsi %>
-                  <textarea class="form-control" name="loan[deskripsi]"><%= @loan.id ? @loan.deskripsi : "" %></textarea>
-                </div>
-              </div>
-              <div class="col-md-6">
                 <div class="form-group">
                   <%= form.label :to_date %>
-                  <input type="date" class="form-control" name="loan[to_date]" value="<%= @loan.id ? @loan.to_date : "" %>">
+                  <input type="date" class="form-control" name="loan[to_date]" value="<%= @loan.id ? @loan.to_date : "" %>" required>
                 </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <%= form.label :deskripsi %>
+                  <textarea class="form-control" name="loan[deskripsi]" required><%= @loan.id ? @loan.deskripsi : "" %></textarea>
+                </div>
+              </div>
+              <div class="col-md-6">
                 <div class="form-group">
                   <%= form.label :penanggung_jawab %>
-                  <input type="text" class="form-control" name="loan[penanggung_jawab]" value="<%= @loan.id ? @loan.penanggung_jawab : "" %>">
+                  <input type="text" class="form-control" name="loan[penanggung_jawab]" value="<%= @loan.id ? @loan.penanggung_jawab : "" %>" required>
                 </div>
               </div>
             </div>
@@ -99,25 +79,22 @@
 </div>
 
 <script>
-  $('#software_id').select2();
-  $('#tool_id').select2();
+  $('#inventory_id').select2();
 
-  $(document).on('keyup', '#jumlah', function(){
-    var jumlah = $(this).val();
-    var tool = $('#tool_id').val();
+  $(document).on('change', '#inventory_id', function(){
+    var inventory_id = $(this).val();
     $.ajax({
-        url: "<%= checkStockAlat_helper_json_index_path %>",
+        url: "<%= checkInventory_helper_json_index_path %>",
         method: 'GET',
         data : {
-                id:tool,
-                jumlah:jumlah
+                id:inventory_id
                 },
         success: function(data)
         {
-          if (data[0]['status'] == "melebihi") {
-            $('.notification_stock').text('Melebihi Batas');
+          if (data[0]['status'] == "sudah dipinjam") {
+            $('.notification_stock').text('Barang Sudah Dipinjam');
             $('#submit').prop('disabled', true);
-          }else{
+          }else if(data[0]['status'] == "tersedia"){
             $('.notification_stock').text('');
             $('#submit').prop('disabled', false);
           }

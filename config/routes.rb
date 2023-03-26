@@ -55,6 +55,8 @@ Rails.application.routes.draw do
     post :simpanInventory, on: :collection
     post :updateInventory, on: :collection
     get :getAllItem, on: :collection
+    get :hapusSatker, on: :collection
+    get :checkInventory, on: :collection
     member do
       get "/sub_work_category", to: "helper_json#getSubWorkCategory"
     end
