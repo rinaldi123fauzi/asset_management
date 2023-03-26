@@ -111,7 +111,6 @@
               <th>Jumlah</th>
               <th>From date</th>
               <th>To date</th>
-              <th>Penanggung jawab</th>
               <th>Status</th>
               <th class="text-center" style="width: 100px;">Action</th>
             </tr>
@@ -121,8 +120,8 @@
             <tr>
               <td class="text-center"><%= index+1 %></td>
               <td><%= loan.user.username %></td>
-              <td><%= loan.software.try(:nama) %></td>
-              <td><%= loan.tool.try(:nama) %></td>
+              <td><%= loan.software ? loan.software.nama : "-" %></td>
+              <td><%= loan.tool ? loan.tool.nama : "-" %></td>
               <td><%= loan.jumlah %></td>
               <td><span class="badge badge-default" style="color: black;"><%= loan.from_date %></span></td>
               <% if Date.current >= loan.to_date && loan.status == 2 %>
@@ -132,7 +131,6 @@
               <% else %>
                 <td><%= loan.to_date %></td>
               <% end %>
-              <td><%= loan.penanggung_jawab %></td>
               <td>
                 <% if loan.status == 0 %>
                   <span class="badge badge-info">Pending</span>
@@ -152,11 +150,13 @@
 =end%>            
                   <button class="btn btn-info btn-circle btn-sm" id="detail" data-toggle="modal" data-target="#detail" data-id="<%= loan.id %>">Detail</button>
                   <% if current_user.roles.any? { |r| r.name != 'admin'} %>
-                    <a href="<%= edit_loan_path(loan) %>" class="btn btn-warning btn-circle btn-sm">
-                      <i class="fas fa-pencil-alt"></i>
-                    </a>
-                    <%= link_to loan_path(loan), method: :delete, class: 'btn btn-danger btn-circle btn-sm' do %>
-                      <i class="fas fa-trash-alt"></i>
+                    <% if loan.status == 0 %>
+                      <a href="<%= edit_loan_path(loan) %>" class="btn btn-warning btn-circle btn-sm">
+                        <i class="fas fa-pencil-alt"></i>
+                      </a>
+                      <%= link_to loan_path(loan), method: :delete, class: 'btn btn-danger btn-circle btn-sm' do %>
+                        <i class="fas fa-trash-alt"></i>
+                      <% end %>
                     <% end %>
                   <% end %>
 

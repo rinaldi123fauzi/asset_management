@@ -1,0 +1,72 @@
+<%= form_with(model: inventory, local: true) do |form| %>
+  <% if inventory.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(inventory.errors.count, "error") %> prohibited this inventory from being saved:</h2>
+
+      <ul>
+      <% inventory.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :kode %>
+    <%= form.text_field :kode %>
+  </div>
+
+  <div class="field">
+    <%= form.label :item_id %>
+    <%= form.text_field :item_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :merek %>
+    <%= form.text_field :merek %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tahun_perolehan %>
+    <%= form.date_select :tahun_perolehan %>
+  </div>
+
+  <div class="field">
+    <%= form.label :harga_perolehan %>
+    <%= form.number_field :harga_perolehan %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nilai_residu %>
+    <%= form.number_field :nilai_residu %>
+  </div>
+
+  <div class="field">
+    <%= form.label :masa_guna %>
+    <%= form.date_select :masa_guna %>
+  </div>
+
+  <div class="field">
+    <%= form.label :lama_pakai %>
+    <%= form.text_field :lama_pakai %>
+  </div>
+
+  <div class="field">
+    <%= form.label :kondisi %>
+    <%= form.text_field :kondisi %>
+  </div>
+
+  <div class="field">
+    <%= form.label :lokasi %>
+    <%= form.text_field :lokasi %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  kode: MyString
+  item: one
+  merek: MyString
+  tahun_perolehan: 2023-03-26
+  harga_perolehan: 1
+  nilai_residu: 1
+  masa_guna: 2023-03-26
+  lama_pakai: MyString
+  kondisi: MyString
+  lokasi: MyString
+  user: one
+
+two:
+  kode: MyString
+  item: two
+  merek: MyString
+  tahun_perolehan: 2023-03-26
+  harga_perolehan: 1
+  nilai_residu: 1
+  masa_guna: 2023-03-26
+  lama_pakai: MyString
+  kondisi: MyString
+  lokasi: MyString
+  user: two

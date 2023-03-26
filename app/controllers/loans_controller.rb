@@ -3,7 +3,12 @@ class LoansController < ApplicationController
 
   # GET /loans or /loans.json
   def index
-    @loans = Loan.all
+    if current_user.roles.any? { |r| r.name != 'user'}
+      @loans = Loan.all.order('status ASC')
+    else
+      @user = current_user.id
+      @loans = Loan.where(user_id: @user).order('status ASC')
+    end
   end
 
   # GET /loans/1 or /loans/1.json
@@ -30,7 +35,7 @@ class LoansController < ApplicationController
     respond_to do |format|
       @loan.status = 0
       if @loan.save
-        format.html { redirect_to loan_url(@loan), notice: "Loan was successfully created." }
+        format.html { redirect_to "/loans", notice: "Loan was successfully created." }
         format.json { render :show, status: :created, location: @loan }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -43,7 +48,7 @@ class LoansController < ApplicationController
   def update
     respond_to do |format|
       if @loan.update(loan_params)
-        format.html { redirect_to loan_url(@loan), notice: "Loan was successfully updated." }
+        format.html { redirect_to "/loans", notice: "Loan was successfully updated." }
         format.json { render :show, status: :ok, location: @loan }
       else
         format.html { render :edit, status: :unprocessable_entity }

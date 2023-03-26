@@ -1,13 +1,11 @@
 Rails.application.routes.draw do
 
 
+  resources :inventories
+  resources :items
   resources :approvals
   resources :loans
-  resources :stocks
   resources :employees
-  resources :tools
-  resources :softwares
-  resources :vendors
   resources :adjustment_jobs
   resources :additional_jobs
   resources :areas
@@ -37,16 +35,6 @@ Rails.application.routes.draw do
   resources :helper_json do
     post :getJudulPekerjaan, on: :collection
     post :getNamaPekerjaan, on: :collection
-    post :simpanVendor, on: :collection
-    post :updateVendor, on: :collection
-    get :getDetailVendor, on: :collection
-    get :getAllVendor, on: :collection
-    get :getDetailAlat, on: :collection
-    get :getDetailSoftware, on: :collection
-    post :simpanAlat, on: :collection
-    post :simpanSoftware, on: :collection
-    post :updateAlat, on: :collection
-    post :updateSoftware, on: :collection
     post :updateSatker, on: :collection
     post :simpanSatker, on: :collection
     get :getDetailSatker, on: :collection
@@ -54,17 +42,19 @@ Rails.application.routes.draw do
     post :simpanKaryawan, on: :collection
     post :updateKaryawan, on: :collection
     get :getDetailKaryawan, on: :collection
-    get :getAllTool, on: :collection
     post :hapusKaryawan, on: :collection
-    post :hapusAlat, on: :collection
-    post :simpanStock, on: :collection
-    post :updateStock, on: :collection
-    get :getDetailStock,on: :collection
-    get :checkStockAlat, on: :collection
     get :approve, on: :collection
     get :reject, on: :collection
     get :done, on: :collection
     get :getDetailPeminjaman, on: :collection
+    post :searchDataDashboard, on: :collection
+    get :getDetailItem, on: :collection
+    post :simpanItem, on: :collection
+    post :updateItem, on: :collection
+    get :getDetailInventory, on: :collection
+    post :simpanInventory, on: :collection
+    post :updateInventory, on: :collection
+    get :getAllItem, on: :collection
     member do
       get "/sub_work_category", to: "helper_json#getSubWorkCategory"
     end

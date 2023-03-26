@@ -8,6 +8,7 @@ class User < ApplicationRecord
   # has_one :worker, dependent: :destroy
   has_many :role_assignments, dependent: :destroy
   has_many :roles, through: :role_assignments
+  has_many :inventory
 
   validates :username, uniqueness: true
   validates :email, uniqueness: true

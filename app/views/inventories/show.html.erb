@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Kode:</strong>
+  <%= @inventory.kode %>
+</p>
+
+<p>
+  <strong>Item:</strong>
+  <%= @inventory.item %>
+</p>
+
+<p>
+  <strong>Merek:</strong>
+  <%= @inventory.merek %>
+</p>
+
+<p>
+  <strong>Tahun perolehan:</strong>
+  <%= @inventory.tahun_perolehan %>
+</p>
+
+<p>
+  <strong>Harga perolehan:</strong>
+  <%= @inventory.harga_perolehan %>
+</p>
+
+<p>
+  <strong>Nilai residu:</strong>
+  <%= @inventory.nilai_residu %>
+</p>
+
+<p>
+  <strong>Masa guna:</strong>
+  <%= @inventory.masa_guna %>
+</p>
+
+<p>
+  <strong>Lama pakai:</strong>
+  <%= @inventory.lama_pakai %>
+</p>
+
+<p>
+  <strong>Kondisi:</strong>
+  <%= @inventory.kondisi %>
+</p>
+
+<p>
+  <strong>Lokasi:</strong>
+  <%= @inventory.lokasi %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @inventory.user %>
+</p>
+
+<%= link_to 'Edit', edit_inventory_path(@inventory) %> |
+<%= link_to 'Back', inventories_path %>

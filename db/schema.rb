@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_23_225654) do
+ActiveRecord::Schema.define(version: 2023_03_26_033113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "approvals", force: :cascade do |t|
     t.bigint "loan_id"
@@ -41,10 +62,32 @@ ActiveRecord::Schema.define(version: 2023_03_23_225654) do
     t.index ["work_unit_id"], name: "index_employees_on_work_unit_id"
   end
 
+  create_table "inventories", force: :cascade do |t|
+    t.string "kode"
+    t.bigint "item_id"
+    t.string "merek"
+    t.date "tahun_perolehan"
+    t.integer "harga_perolehan"
+    t.integer "nilai_residu"
+    t.date "masa_guna"
+    t.string "lama_pakai"
+    t.string "kondisi"
+    t.string "lokasi"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_inventories_on_item_id"
+    t.index ["user_id"], name: "index_inventories_on_user_id"
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.string "nama_item"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "loans", force: :cascade do |t|
     t.bigint "user_id"
-    t.bigint "software_id"
-    t.bigint "tool_id"
     t.string "deskripsi"
     t.integer "jumlah"
     t.date "from_date"
@@ -53,8 +96,8 @@ ActiveRecord::Schema.define(version: 2023_03_23_225654) do
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["software_id"], name: "index_loans_on_software_id"
-    t.index ["tool_id"], name: "index_loans_on_tool_id"
+    t.bigint "inventory_id"
+    t.index ["inventory_id"], name: "index_loans_on_inventory_id"
     t.index ["user_id"], name: "index_loans_on_user_id"
   end
 
@@ -75,40 +118,6 @@ ActiveRecord::Schema.define(version: 2023_03_23_225654) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "softwares", force: :cascade do |t|
-    t.string "nomor_serial"
-    t.string "nama"
-    t.string "kategori"
-    t.string "license_by"
-    t.string "expired_date"
-    t.bigint "vendor_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["vendor_id"], name: "index_softwares_on_vendor_id"
-  end
-
-  create_table "stocks", force: :cascade do |t|
-    t.bigint "software_id"
-    t.bigint "tool_id"
-    t.integer "jumlah"
-    t.integer "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["software_id"], name: "index_stocks_on_software_id"
-    t.index ["tool_id"], name: "index_stocks_on_tool_id"
-  end
-
-  create_table "tools", force: :cascade do |t|
-    t.string "nomor_serial"
-    t.string "nama"
-    t.string "kategori"
-    t.string "sifat"
-    t.bigint "vendor_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["vendor_id"], name: "index_tools_on_vendor_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -125,29 +134,19 @@ ActiveRecord::Schema.define(version: 2023_03_23_225654) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "vendors", force: :cascade do |t|
-    t.string "nama"
-    t.string "alamat"
-    t.string "kategori"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "work_units", force: :cascade do |t|
     t.string "nama"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "approvals", "loans"
   add_foreign_key "employees", "work_units"
-  add_foreign_key "loans", "softwares"
-  add_foreign_key "loans", "tools"
+  add_foreign_key "inventories", "items"
+  add_foreign_key "inventories", "users"
+  add_foreign_key "loans", "inventories"
   add_foreign_key "loans", "users"
   add_foreign_key "role_assignments", "roles"
   add_foreign_key "role_assignments", "users"
-  add_foreign_key "softwares", "vendors"
-  add_foreign_key "stocks", "softwares"
-  add_foreign_key "stocks", "tools"
-  add_foreign_key "tools", "vendors"
 end

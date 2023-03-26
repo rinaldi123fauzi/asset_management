@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Inventories</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Kode</th>
+      <th>Item</th>
+      <th>Merek</th>
+      <th>Tahun perolehan</th>
+      <th>Harga perolehan</th>
+      <th>Nilai residu</th>
+      <th>Masa guna</th>
+      <th>Lama pakai</th>
+      <th>Kondisi</th>
+      <th>Lokasi</th>
+      <th>User</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @inventories.each do |inventory| %>
+      <tr>
+        <td><%= inventory.kode %></td>
+        <td><%= inventory.item %></td>
+        <td><%= inventory.merek %></td>
+        <td><%= inventory.tahun_perolehan %></td>
+        <td><%= inventory.harga_perolehan %></td>
+        <td><%= inventory.nilai_residu %></td>
+        <td><%= inventory.masa_guna %></td>
+        <td><%= inventory.lama_pakai %></td>
+        <td><%= inventory.kondisi %></td>
+        <td><%= inventory.lokasi %></td>
+        <td><%= inventory.user %></td>
+        <td><%= link_to 'Show', inventory %></td>
+        <td><%= link_to 'Edit', edit_inventory_path(inventory) %></td>
+        <td><%= link_to 'Destroy', inventory, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Inventory', new_inventory_path %>

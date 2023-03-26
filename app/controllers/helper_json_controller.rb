@@ -49,49 +49,6 @@ class HelperJsonController < ApplicationController
         end
     end
 
-    def simpanVendor
-        Vendor.create!(
-            'nama' => params[:namaVendor],
-            'alamat' => params[:alamat],
-            'kategori' => params[:kategori]
-        )
-        render json: [  
-                        "status" => "tersimpan"
-        ]
-    end
-
-    def updateVendor
-        @data = Vendor.update(params[:id_vendor],
-            {
-                :nama => params[:namaVendor],
-                :alamat => params[:alamat],
-                :kategori => params[:kategori]
-            }
-        )
-        if (@data)
-            render json: [  
-                "status" => "tersimpan",
-                "vendor" => params[:namaVendor]
-            ]
-        end
-    end
-
-    def getDetailVendor
-        @data = Vendor.find(params[:id])
-        render json:[
-            "nama" => @data.nama,
-            "alamat" => @data.alamat,
-            "kategori" => @data.kategori
-        ]
-    end
-
-    def getAllVendor
-        @data = Vendor.all()
-        render json:[
-            "vendor" => @data
-        ]
-    end
-
     def getAllSatker
         @data = WorkUnit.all()
         render json:[
@@ -99,59 +56,112 @@ class HelperJsonController < ApplicationController
         ]
     end
 
-    def getAllTool
-        @data = Tool.all()
-        render json:[
-            "tools" => @data
-        ]
-    end
-
-    def simpanAlat
-        Tool.create!(
-            'nama' => params[:namaAlat],
-            'nomor_serial' => params[:nomorSerial],
-            'kategori' => params[:kategori],
-            'sifat' => params[:sifat],
-            'vendor_id' => params[:vendor]
-        )
-        render json: [  
+    def simpanInventory
+        ActiveRecord::Base.transaction do
+            @simpan = Inventory.new()
+            @simpan.kode = params[:kode]
+            @simpan.item_id = params[:item]
+            @simpan.merek = params[:merek]
+            @simpan.tahun_perolehan = params[:tahun_perolehan]
+            @simpan.harga_perolehan = params[:harga_perolehan]
+            @simpan.nilai_residu = params[:nilai_residu]
+            @simpan.masa_guna = params[:masa_guna]
+            @simpan.lama_pakai = params[:lama_pakai]
+            @simpan.kondisi = params[:kondisi]
+            @simpan.lokasi = params[:lokasi]
+            if params[:foto_inventory]
+                @simpan.foto_inventory = params[:foto_inventory]               
+            end
+            @simpan.save!
+        end
+        render json: { 
             "status" => "tersimpan"
-        ]
+        }
     end
 
-    def simpanStock
-        Stock.create!(
-            'tool_id' => params[:namaAlat],
-            'status' => params[:status],
-            'jumlah' => params[:jumlah]
-        )
-        render json: [  
-            "status" => "tersimpan"
-        ]
-    end
-
-    def updateStock
-        @data = Stock.update(params[:id_stock],
-            {
-                :tool_id => params[:namaAlat],
-                :jumlah => params[:jumlah],
-                :status => params[:status]
-            }
-        )
+    def updateInventory
+        ActiveRecord::Base.transaction do
+            @update = Inventory.find(params[:id_inventory])
+            @data = Inventory.update(params[:id_inventory],
+                {
+                    :kode => params[:kode],
+                    :item_id => params[:item],
+                    :merek => params[:merek],
+                    :tahun_perolehan => params[:tahun_perolehan],
+                    :harga_perolehan => params[:harga_perolehan],
+                    :nilai_residu => params[:nilai_residu],
+                    :masa_guna => params[:masa_guna],
+                    :lama_pakai => params[:lama_pakai],
+                    :kondisi => params[:kondisi],
+                    :lokasi => params[:lokasi]
+                }
+            )
+            if (params[:foto_inventory])
+                @update.update(:foto_inventory => params[:foto_inventory])
+            end
+        end
 
         if (@data)
-            render json: [  
-                "status" => "tersimpan"
-            ]
+            render json: {
+                status: "tersimpan"
+            }
         end
     end
 
-    def getDetailStock
-        @data = Stock.find(params[:id])
-        @tools = Tool.all()
+    def getDetailInventory
+        @data = Inventory.find(params[:id])
+        @item = Item.all()
         render json: [
-            "stock" => @data,
-            "tools" => @tools
+            :kode => @data.kode,
+            :item => @data.item_id,
+            :merek => @data.merek,
+            :tahun_perolehan => @data.tahun_perolehan,
+            :harga_perolehan => @data.harga_perolehan,
+            :nilai_residu => @data.nilai_residu,
+            :masa_guna => @data.masa_guna,
+            :lama_pakai => @data.lama_pakai,
+            :kondisi => @data.kondisi,
+            :lokasi => @data.lokasi,
+            'items' => @item
+        ]
+    end
+
+    def simpanItem
+        Item.create!(
+            'nama_item' => params[:nama_item],
+        )
+        render json: { 
+            "status" => "tersimpan"
+        }
+    end
+
+    def updateItem
+        ActiveRecord::Base.transaction do
+            @data = Item.update(params[:id_item],
+                {
+                    :nama_item => params[:nama_item],
+                }
+            )
+        end
+
+        if (@data)
+            render json: {
+                status: "tersimpan"
+            }
+        end
+    end
+
+    def getDetailItem
+        @data = Item.find(params[:id])
+        render json: [
+            "item" => @data.nama_item
+        ]
+    end
+
+    def getAllItem
+        @data = Item.all()
+        render json: [
+            "item" => @data
         ]
     end
 
@@ -169,58 +179,6 @@ class HelperJsonController < ApplicationController
             render json: [  
                 "status" => "tersimpan",
                 "nomor" => params[:nomorSerial]
-            ]
-        end
-    end
-
-    def getDetailAlat
-        @data = Tool.find(params[:id])
-        @vendor = Vendor.all()
-        render json:[
-            "tool" => @data,
-            "vendor" => @vendor
-        ]
-    end
-
-    def simpanSoftware
-        @data = Software.create!(
-            'nama' => params[:namaSoftware],
-            'nomor_serial' => params[:nomorSerial],
-            'kategori' => params[:kategori],
-            'license_by' => params[:licenseBy],
-            'expired_date' => params[:expiredDate],
-            'vendor_id' => params[:vendor]
-        )
-        if (@data)
-            render json: [  
-                "status" => "tersimpan"
-            ]
-        end
-    end
-
-    def getDetailSoftware
-        @data = Software.find(params[:id])
-        @vendor = Vendor.all()
-        render json:[
-            "software" => @data,
-            "vendor" => @vendor
-        ]
-    end
-
-    def updateSoftware
-        @data = Software.update(params[:id_software],
-            {
-                :nama => params[:namaSoftware],
-                :nomor_serial => params[:nomorSerial],
-                :kategori => params[:kategori],
-                :license_by => params[:licenseBy],
-                :expired_date => params[:expiredDate],
-                :vendor_id => params[:vendor]
-            }
-        )
-        if (@data)
-            render json: [  
-                "status" => "tersimpan"
             ]
         end
     end
@@ -311,28 +269,6 @@ class HelperJsonController < ApplicationController
         if (@data)
             render json: [  
                 "status" => "terhapus",
-            ]
-        end
-    end
-
-    def hapusAlat
-        @data = Tool.find(params[:id]).destroy
-        if (@data)
-            render json: [  
-                "status" => "terhapus",
-            ]
-        end
-    end
-
-    def checkStockAlat
-        @data = Stock.find_by_tool_id(params[:id])
-        if (params[:jumlah].to_i > @data.jumlah)
-            render json: [  
-                "status" => "melebihi",
-            ]
-        else
-            render json: [  
-                "status" => "aman",
             ]
         end
     end

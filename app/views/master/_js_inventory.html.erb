@@ -1,0 +1,139 @@
+<script>
+    $(document).on('click', '.tambah-inventory', function(){
+      const id = 1;
+      $('#kode').val('');
+      $('#item').empty();
+      $('#merek').val('');
+      $('#tahun_perolehan').val('');
+      $('#harga_perolehan').val('');
+      $('#nilai_residu').val('');
+      $('#masa_guna').val('');
+      $('#lama_pakai').val('');
+      $('#kondisi').val('');
+      $('#lokasi').val('');
+      $('.modal-title').text('Tambah Data');
+      $.ajax({
+        url: "<%= getAllItem_helper_json_index_path %>",
+        method: 'GET',
+        data : {
+                id:id
+                },
+        success: function(data)
+        {
+          viewHtml = '';
+          for (let i = 0; i < data[0]['item'].length; i++) {
+            const element = data[0]['item'][i];
+            viewHtml += '<option value='+element['id']+'>'+element['nama_item']+'</option>';
+          }
+          $('#item').html(viewHtml);
+
+          viewHtmlKondisi = '';
+          viewHtmlKondisi += '<option value="baik">Baik</option>';
+          viewHtmlKondisi += '<option value="diperbaiki">Diperbaiki</option>';
+          viewHtmlKondisi += '<option value="diganti">Diganti</option>';
+          $('#kondisi').append(viewHtmlKondisi);
+
+          viewHtmlLokasi = '';
+          viewHtmlLokasi += '<option value="kantor">Kantor</option>';
+          viewHtmlLokasi += '<option value="dipinjam">Dipinjam</option>';
+          $('#lokasi').append(viewHtmlLokasi);
+        }
+      });
+    });
+
+    $(document).on('click','#ubahInventory', function(e){
+      e.preventDefault();
+      $('#kode').val('');
+      $('#item').empty();
+      $('#merek').val('');
+      $('#tahun_perolehan').val('');
+      $('#harga_perolehan').val('');
+      $('#nilai_residu').val('');
+      $('#masa_guna').val('');
+      $('#lama_pakai').val('');
+      $('#kondisi').val('');
+      $('#lokasi').val('');
+      var id = $(this).data('id');
+      $('#id_inventory').val(id);
+      $('.modal-title').text('Ubah Data');
+      $.ajax({
+        url: "<%= getDetailInventory_helper_json_index_path %>",
+        method: 'GET',
+        data : {
+                id:id
+                },
+        success: function(data)
+        {
+          $('#kode').val(data[0]['kode']);
+          viewHtmlItem = '';
+          for (let i = 0; i < data[0]['items'].length; i++) {
+            const element = data[0]['items'][i];
+            if (data[0]['item'] == element['id']) {
+              viewHtmlItem += '<option value="'+element['id']+'" selected>'+element['nama_item']+'</option>'
+            }else{
+              viewHtmlItem += '<option value="'+element['id']+'">'+element['nama_item']+'</option>'
+            }
+          }
+          $('#item').append(viewHtmlItem);
+          $('#merek').val(data[0]['merek']);
+          $('#tahun_perolehan').val(data[0]['tahun_perolehan']);
+          $('#harga_perolehan').val(data[0]['harga_perolehan']);
+          $('#nilai_residu').val(data[0]['nilai_residu']);
+          $('#masa_guna').val(data[0]['masa_guna']);
+          $('#lama_pakai').val(data[0]['lama_pakai']);
+          
+          viewHtmlKondisi = '';
+          if (data[0]['kondisi'] == "baik") {
+            viewHtmlKondisi += '<option value="baik" selected>Baik</option>';
+            viewHtmlKondisi += '<option value="diperbaiki">Diperbaiki</option>';
+            viewHtmlKondisi += '<option value="diganti">Diganti</option>';
+          }else if(data[0]['kondisi'] == "diperbaiki"){
+            viewHtmlKondisi += '<option value="baik">Baik</option>';
+            viewHtmlKondisi += '<option value="diperbaiki" selected>Diperbaiki</option>';
+            viewHtmlKondisi += '<option value="diganti">Diganti</option>';
+          }else if(data[0]['kondisi'] == "diperbaiki"){
+            viewHtmlKondisi += '<option value="baik">Baik</option>';
+            viewHtmlKondisi += '<option value="diperbaiki">Diperbaiki</option>';
+            viewHtmlKondisi += '<option value="diganti" selected>Diganti</option>';
+          }
+          $('#kondisi').append(viewHtmlKondisi);
+
+          viewHtmlLokasi = '';
+          if (data[0]['lokasi'] == "kantor") {
+            viewHtmlLokasi += '<option value="kantor" selected>Kantor</option>';
+            viewHtmlLokasi += '<option value="dipinjam">Dipinjam</option>';
+          }else if(data[0]['lokasi'] == "dipinjam"){
+            viewHtmlLokasi += '<option value="kantor">Kantor</option>';
+            viewHtmlLokasi += '<option value="dipinjam" selected>Dipinjam</option>';
+          }
+          $('#lokasi').append(viewHtmlLokasi);
+          // $('#lokasi').val(data[0]['lokasi']);
+        }
+      });
+    });
+
+    const btn = document.querySelector('#simpanInventory');
+    const form = document.querySelector('form');
+
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      var id_inventory = $('#id_inventory').val();
+      $('#simpanInventory').text('Loading...');
+      let xhr = new XMLHttpRequest();  
+      if (id_inventory == "") {
+        xhr.open("POST", "<%= simpanInventory_helper_json_index_path %>", true);
+        xhr.send(formData);
+      }else{
+        xhr.open("POST", "<%= updateInventory_helper_json_index_path %>", true);
+        xhr.send(formData);
+      }
+
+      xhr.addEventListener("load", function(e){
+        let result = JSON.parse(xhr.response);
+        if (result.status == "tersimpan") {
+          window.location.href = "/master/index?pilihan=Data Inventory";
+        }
+      });
+    });
+</script>

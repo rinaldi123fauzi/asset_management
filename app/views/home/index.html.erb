@@ -3,10 +3,23 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <label>Area</label>
-                    <select class="form-control select2" id="area">
-                        <option selected disabled>--Pilih Area--</option>
-                        
+                    <label>Software</label>
+                    <select class="form-control select2" id="software">
+                        <option selected disabled>--Pilih Software--</option>
+                        <% @softwares.each do |f| %>
+                            <option value="<%= f.id %>"><%= f.nama %></option>
+                        <% end %>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Alat</label>
+                    <select class="form-control select2" id="alat">
+                        <option selected disabled>--Pilih Alat--</option>
+                        <% @tools.each do |f| %>
+                            <option value="<%= f.id %>"><%= f.nama %></option>
+                        <% end %>
                     </select>
                 </div>
             </div>
@@ -22,18 +35,6 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="form-group">
-                    <label>Nilai Material</label>
-                    <select class="form-control select2" id="material">
-                        <option selected disabled>--Pilih Material--</option>
-                        <option value="nilai total kontrak">nilai total kontrak</option>
-                        <option value="nilai total vendor">nilai total vendor</option>
-                        <option value="nilai total terpasang belum ditagih">nilai total terpasang belum ditagih</option>
-                        <option value="nilai total tertagih">nilai total yang tertagih</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-3">
                 <label style="color: transparent;">Nilai Material</label><br>
                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
             </div>
@@ -43,7 +44,7 @@
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-6">
             <div class="card">
             <div class="card-header">
-                <h4>Jilid-2</h4>
+                <h4>Software</h4>
             </div>
             <div class="card-body">
                 <div class="recent-report__chart">
@@ -55,23 +56,11 @@
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-6">
             <div class="card">
             <div class="card-header">
-                <h4>SPK-2</h4>
+                <h4>Alat / Tools</h4>
             </div>
             <div class="card-body">
                 <div class="recent-report__chart">
                 <div id="chart2"></div>
-                </div>
-            </div>
-            </div>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-6">
-            <div class="card">
-            <div class="card-header">
-                <h4>Sub Total</h4>
-            </div>
-            <div class="card-body">
-                <div class="recent-report__chart">
-                <div id="chart3"></div>
                 </div>
             </div>
             </div>
@@ -109,7 +98,7 @@ $(document).ready(function () {
 
 $('#searchData').submit(function(e) {
     e.preventDefault();
-    const area = $('#area option:selected').val();
+    const software = $('#software option:selected').val();
     const tahun = $('#tahun option:selected').val();
     const material = $('#material option:selected').val();
     $.ajax({
@@ -117,7 +106,7 @@ $('#searchData').submit(function(e) {
         method: 'POST',
         data : {
                 authenticity_token: '<%= form_authenticity_token %>',
-                area:area,
+                software:software,
                 tahun:tahun,
                 material:material
                 },

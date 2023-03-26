@@ -1,0 +1,51 @@
+<script>
+    $(document).on('click', '.tambah-item', function(){
+      const id = 1;
+      $('#nama_item').val('');
+      $('.modal-title').text('Tambah Data');
+    });
+
+    $(document).on('click','#ubahItem', function(e){
+      e.preventDefault();
+      $('#nama_item').val('');
+      var id = $(this).data('id');
+      $('#id_item').val(id);
+      $('.modal-title').text('Ubah Data');
+      $.ajax({
+        url: "<%= getDetailItem_helper_json_index_path %>",
+        method: 'GET',
+        data : {
+                id:id
+                },
+        success: function(data)
+        {
+          $('#nama_item').val(data[0]['item']);
+        }
+      });
+    });
+
+    const btn = document.querySelector('#simpanItem');
+    const form = document.querySelector('form');
+
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      var id_item = $('#id_item').val();
+      $('#simpanItem').text('Loading...');
+      let xhr = new XMLHttpRequest();  
+      if (id_item == "") {
+        xhr.open("POST", "<%= simpanItem_helper_json_index_path %>", true);
+        xhr.send(formData);
+      }else{
+        xhr.open("POST", "<%= updateItem_helper_json_index_path %>", true);
+        xhr.send(formData);
+      }
+
+      xhr.addEventListener("load", function(e){
+        let result = JSON.parse(xhr.response);
+        if (result.status == "tersimpan") {
+          window.location.href = "/master/index?pilihan=Data Item";
+        }
+      });
+    });
+</script>
