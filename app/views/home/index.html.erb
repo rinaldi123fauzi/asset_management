@@ -5,10 +5,15 @@
                 <div class="form-group">
                     <label>Tahun</label>
                     <select class="form-control select2" id="tahun">
-                        <option selected disabled>--Pilih Tahun--</option>
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
+                        <option disabled>--Pilih Tahun--</option>
+                        <% @year = Date.today.year %>
+                        <% for a in 2022..@year %>
+                            <% if @year %>
+                                <option value="<%= a %>" selected><%= a %></option>
+                            <% else %>
+                                <option value="<%= a %>"><%= a %></option>
+                            <% end %>
+                        <% end %>
                     </select>
                 </div>
             </div>

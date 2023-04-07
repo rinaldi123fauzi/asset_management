@@ -28,7 +28,8 @@
                 </div>
                 <div class="form-group">
                   <%= form.label :from_date %>
-                    <input type="date" class="form-control" name="loan[from_date]" value="<%= @loan.id ? @loan.from_date : "" %>" required>
+                    <input type="date" class="form-control from-date" onchange="fromDate()" name="loan[from_date]" value="<%= @loan.id ? @loan.from_date : "" %>" required>
+                    <i class="notification_datefrom text-danger"></i>
                 </div>
               </div>
               <div class="col-md-6">
@@ -52,7 +53,8 @@
                 </div>
                 <div class="form-group">
                   <%= form.label :to_date %>
-                  <input type="date" class="form-control" name="loan[to_date]" value="<%= @loan.id ? @loan.to_date : "" %>" required>
+                  <input type="date" class="form-control to-date" onchange="toDate()" name="loan[to_date]" value="<%= @loan.id ? @loan.to_date : "" %>" required>
+                  <i class="notification_dateto text-danger"></i>
                 </div>
               </div>
               <div class="col-md-6">
@@ -81,6 +83,31 @@
 <script>
   $('#inventory_id').select2();
 
+  function fromDate(){
+    const from_date = $('.from-date').val();
+    const to_date = $('.to-date').val();
+    if (from_date > to_date) {
+      $('.notification_datefrom').text('Tanggal harus lebih kecil');
+      $('#submit').prop('disabled', true);
+    }else{
+      $('.notification_datefrom').text('');
+      $('.notification_dateto').text('');
+      $('#submit').prop('disabled', false);
+    }
+  }
+
+  function toDate(){
+    const to_date = $('.to-date').val();
+    const from_date = $('.from-date').val();
+    if (to_date < from_date) {
+      $('.notification_dateto').text('Tanggal harus lebih besar');
+      $('#submit').prop('disabled', true);
+    }else{
+      $('.notification_dateto').text('');
+      $('.notification_datefrom').text('');
+      $('#submit').prop('disabled', false);
+    }
+  }
   $(document).on('change', '#inventory_id', function(){
     var inventory_id = $(this).val();
     $.ajax({
