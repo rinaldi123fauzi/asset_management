@@ -440,7 +440,7 @@
                 <div class="form-group">
                   <label>Lama Pakai</label>
                   <div class="input-group">
-                    <input type="date" class="form-control" name="lama_pakai" id="lama_pakai">
+                    <input type="text" class="form-control" name="lama_pakai" id="lama_pakai">
                   </div>
                 </div>
                 <div class="form-group">
@@ -533,7 +533,7 @@
                     <div class="form-group">
                       <label>Lama Pakai</label>
                       <div class="input-group">
-                        <input type="date" class="form-control" id="viewlama_pakai" disabled>
+                        <input type="text" class="form-control" id="viewlama_pakai" disabled>
                       </div>
                     </div>
                   </div>
@@ -594,7 +594,11 @@
                   <td><%= inventory.item.nama_item %></td>
                   <td><%= inventory.merek %></td>
                   <td><%= inventory.kondisi %></td>
-                  <td><%= inventory.lokasi %></td>
+                  <% if inventory.lokasi == "dipinjam" %>
+                    <td><span class="badge badge-danger"><%= inventory.lokasi %></span></td>
+                  <% else %>
+                    <td><%= inventory.lokasi %></td>
+                  <% end %>
                   <td><%= inventory.user.try(:username) %></td>
                   <td>
                     <% inventory.foto_inventory.order(:created_at => :desc).each do |lampiran| %>
