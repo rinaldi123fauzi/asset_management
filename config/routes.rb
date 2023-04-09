@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     get :hapusSatker, on: :collection
     get :checkInventory, on: :collection
     get :deleteFile, on: :collection
+    post :activationUser, on: :collection
     member do
       get "/sub_work_category", to: "helper_json#getSubWorkCategory"
     end

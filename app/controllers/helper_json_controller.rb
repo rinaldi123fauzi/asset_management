@@ -131,6 +131,7 @@ class HelperJsonController < ApplicationController
         Item.create!(
             'nama_item' => params[:nama_item],
         )
+        flash[:alert] = "created"
         render json: { 
             "status" => "tersimpan"
         }
@@ -146,6 +147,7 @@ class HelperJsonController < ApplicationController
         end
 
         if (@data)
+            flash[:alert] = "updated"
             render json: {
                 status: "tersimpan"
             }
@@ -350,6 +352,20 @@ class HelperJsonController < ApplicationController
         if @attachment
             render json: [  
                 "status" => "terhapus",
+            ]
+        end
+    end
+
+    def activationUser
+        if params[:status] == "1"
+            @value = "1"
+        elsif params[:status] == "0"
+            @value = "0"
+        end
+        @update = User.update(params[:id], {:state => @value})
+        if @update
+            render json: [  
+                "status" => "terubah",
             ]
         end
     end

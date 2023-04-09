@@ -1,0 +1,22 @@
+<script>
+    $(document).on('click','.activation',function(e){
+        e.preventDefault();
+        var id = $(this).data('id');
+        var status = $(this).data('status');
+        $.ajax({
+            url: "<%= activationUser_helper_json_index_path %>",
+            method: 'POST',
+            data : {
+                    authenticity_token: '<%= form_authenticity_token %>',
+                    id:id,
+                    status:status
+                    },
+            success: function(data)
+            {
+                if (data[0]['status'] == "terubah") {
+                    window.location.href = "/master/index?pilihan=Data User";
+                }
+            }
+        });
+    });
+</script>
