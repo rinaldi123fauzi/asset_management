@@ -26,6 +26,7 @@ $(document).ready(function(){
 $(document).on('click','#close-modal',function(){
     $(".modal").hide();
     $(".modal-backdrop").remove();
+    $('.modal').modal( 'hide' ).data( 'bs.modal', null );
 });
 
 $("#dataTable_role").dataTable();
