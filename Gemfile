@@ -76,3 +76,4 @@ gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 gem 'inline_svg'
 gem 'toastr-rails'
+gem 'rails_performance' #monitoring
