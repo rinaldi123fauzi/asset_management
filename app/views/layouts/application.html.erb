@@ -763,4 +763,33 @@
     </body>
   <% end %>
 
+  <script>
+    if("<%= notice %>" != "") {
+        setTimeout(function () {
+          toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'slideDown',
+                timeOut: 3000
+          };
+          toastr.success('<%= notice %>', 'Informasi').css("width","400px");
+
+        }, 500);
+    } else
+
+    if("<%= alert %>" != "") {
+        setTimeout(function () {
+          toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'slideDown',
+                timeOut: 3000
+          };
+          toastr.error('<%= alert %>', 'Informasi').css("width","400px");
+
+        }, 500);
+    }
+
+  </script>
+
 </html>
